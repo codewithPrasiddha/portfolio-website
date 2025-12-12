@@ -7,7 +7,7 @@
     <title>Prasiddha Thapaliya - Windows XP Portfolio</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Font Awesome for icons (still useful for internal window content) -->
+    <!-- Load Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Load Inter font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -26,13 +26,14 @@
         /* Set Inter font globally */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #559e55; /* Fallback color */
+            background-color: #559e55;
             /* Using user-provided local file: bg.jpg */
             background-image: url('bg.jpg'); 
             background-size: cover;
             background-position: center;
             min-height: 100vh;
             overflow: hidden; /* Prevent body scroll */
+            user-select: none; /* Prevent text selection on desktop */
         }
 
         /* --- Window Styles (XP Luna Theme Emulation) --- */
@@ -103,6 +104,7 @@
             max-height: calc(100% - 30px);
             height: calc(100% - 30px);
             box-sizing: border-box;
+            user-select: text; /* Allow text selection inside windows */
         }
 
         /* --- Taskbar Styles --- */
@@ -116,7 +118,7 @@
             background-color: var(--xp-blue);
             border-top: 1px solid #779dbe;
             box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.3);
-            z-index: 50;
+            z-index: 9999; /* Ensure taskbar is always on top */
             display: flex;
             align-items: center;
             padding: 2px 4px;
@@ -139,6 +141,7 @@
             text-shadow: var(--xp-shadow);
             margin-right: 4px;
             padding: 0 4px;
+            z-index: 10000;
         }
         .start-button-xp:active {
             box-shadow: -1px -1px 0 #fff inset, 1px 1px 0 #4f8b28 inset;
@@ -176,6 +179,7 @@
         .taskbar-item-xp.active {
             background-image: linear-gradient(to bottom, #72a5d2, #3a6ea5);
             box-shadow: -1px -1px 0 #a9c5e3 inset, 1px 1px 0 #3e5a77 inset;
+            font-weight: bold;
         }
 
         .taskbar-clock-xp {
@@ -203,8 +207,6 @@
             color: white;
             text-shadow: var(--xp-shadow);
             cursor: pointer;
-            user-select: none;
-            /* Allow double-click */
         }
 
         .desktop-icon-xp:hover {
@@ -213,7 +215,6 @@
         }
 
         .desktop-icon-xp .icon {
-            /* Generic size for custom icons */
             width: 40px;
             height: 40px;
             margin: 0 auto 5px;
@@ -221,57 +222,86 @@
         }
         
         /* Custom SVG Icon Styling */
-        .icon-portfolio { /* My Portfolio/My Computer */
-            fill: #fff;
-            stroke: #000;
-            stroke-width: 1;
-            filter: drop-shadow(1px 1px 0 #000);
-        }
-        .icon-user { /* About Me/My Documents */
-            fill: #f89406;
-            stroke: #000;
-            stroke-width: 1.5;
-            filter: drop-shadow(1px 1px 0 #000);
-        }
-        .icon-resume { /* My Resume/Recycle Bin or briefcase */
-            fill: #fff;
-            stroke: #f89406;
-            stroke-width: 1.5;
-            filter: drop-shadow(1px 1px 0 #000);
-        }
-        .icon-certs { /* Certifications/Network */
-            fill: #3a6ea5;
-            stroke: #fff;
-            stroke-width: 0.5;
-            filter: drop-shadow(1px 1px 0 #000);
-        }
-        .icon-contact { /* Contact Me/Mail */
-            fill: #cc0000;
-            stroke: #fff;
-            stroke-width: 1;
-            filter: drop-shadow(1px 1px 0 #000);
-        }
+        .icon-portfolio { fill: #fff; stroke: #000; stroke-width: 1; filter: drop-shadow(1px 1px 0 #000); }
+        .icon-user { fill: #f89406; stroke: #000; stroke-width: 1.5; filter: drop-shadow(1px 1px 0 #000); }
+        .icon-resume { fill: #fff; stroke: #f89406; stroke-width: 1.5; filter: drop-shadow(1px 1px 0 #000); }
+        .icon-certs { fill: #3a6ea5; stroke: #fff; stroke-width: 0.5; filter: drop-shadow(1px 1px 0 #000); }
+        .icon-contact { fill: #cc0000; stroke: #fff; stroke-width: 1; filter: drop-shadow(1px 1px 0 #000); }
 
         .desktop-icon-xp .label {
             font-size: 12px;
             word-wrap: break-word;
         }
 
-        /* XP Scrollbar Look (Basic Emulation) */
-        .window-xp-content::-webkit-scrollbar {
-            width: 16px;
+        /* --- Widgets --- */
+        .widget-xp {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            padding: 10px;
+            cursor: move;
+            z-index: 5;
+            user-select: none;
         }
-        .window-xp-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border: 1px solid #c0c0c0;
+        
+        /* Clock Widget */
+        .widget-clock {
+            top: 20px;
+            right: 20px;
+            width: 200px;
+            text-align: center;
+            border: 2px solid #3a6ea5;
+            background: linear-gradient(to bottom, #eff, #e0f0ff);
         }
-        .window-xp-content::-webkit-scrollbar-thumb {
-            background: #c0c0c0;
-            border: 1px solid #a0a0a0;
+        .widget-clock h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #003669;
+            margin: 0;
+            line-height: 1;
         }
-        .window-xp-content::-webkit-scrollbar-thumb:hover {
-            background: #a0a0a0;
+        .widget-clock p {
+            font-size: 1rem;
+            color: #555;
+            margin: 5px 0 0;
         }
+
+        /* Weather Widget */
+        .widget-weather {
+            top: 150px;
+            right: 20px;
+            width: 200px;
+            background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+            border: 2px solid #3a6ea5;
+            color: #003669;
+            text-align: center;
+        }
+        .widget-weather .city {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        .widget-weather .icon-container {
+            font-size: 3rem;
+            color: #FFD700; /* Sun Gold */
+            margin: 5px 0;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
+        }
+        .widget-weather .temp {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .widget-weather .desc {
+            font-size: 0.9rem;
+            text-transform: capitalize;
+        }
+
+        /* Scrollbar */
+        .window-xp-content::-webkit-scrollbar { width: 16px; }
+        .window-xp-content::-webkit-scrollbar-track { background: #f1f1f1; border: 1px solid #c0c0c0; }
+        .window-xp-content::-webkit-scrollbar-thumb { background: #c0c0c0; border: 1px solid #a0a0a0; }
+        .window-xp-content::-webkit-scrollbar-thumb:hover { background: #a0a0a0; }
 
         /* Content Styling */
         .xp-content-box {
@@ -300,64 +330,29 @@
         }
 
         /* Timeline styles adjustment for XP look */
-        .main-timeline {
-            position: relative;
-        }
+        .main-timeline { position: relative; }
         .main-timeline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 2px;
-            height: 100%;
-            background: #808080;
-            margin-left: -1px;
+            content: ''; position: absolute; top: 0; left: 50%; width: 2px; height: 100%;
+            background: #808080; margin-left: -1px;
         }
         .timeline {
-            margin-bottom: 20px;
-            position: relative;
-            display: flex;
-            width: 100%;
-            padding: 0 10px;
-            box-sizing: border-box;
+            margin-bottom: 20px; position: relative; display: flex; width: 100%;
+            padding: 0 10px; box-sizing: border-box;
         }
-        .timeline:nth-child(even) {
-            flex-direction: row-reverse;
-        }
+        .timeline:nth-child(even) { flex-direction: row-reverse; }
         .timeline-content {
-            background: #fcfcfc;
-            border: 1px solid #c0c0c0;
-            padding: 10px;
-            width: 45%;
-            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
+            background: #fcfcfc; border: 1px solid #c0c0c0; padding: 10px; width: 45%;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); border-radius: 4px;
         }
         .timeline:nth-child(odd) .timeline-content { margin-right: 5%; }
         .timeline:nth-child(even) .timeline-content { margin-left: 5%; }
-
         .timeline-icon {
-            position: absolute;
-            top: 5px;
-            left: 50%;
-            width: 40px;
-            height: 40px;
-            background: white;
-            border: 2px solid var(--xp-blue);
-            border-radius: 50%;
-            z-index: 1;
-            margin-left: -20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            position: absolute; top: 5px; left: 50%; width: 40px; height: 40px;
+            background: white; border: 2px solid var(--xp-blue); border-radius: 50%;
+            z-index: 1; margin-left: -20px; display: flex; justify-content: center;
+            align-items: center; overflow: hidden;
         }
-        .timeline-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
+        .timeline-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
     </style>
 </head>
 
@@ -365,10 +360,23 @@
 
     <!-- Main Desktop Area -->
     <div id="desktop" class="absolute inset-0 pb-10">
-        <!-- Desktop Icons -->
-        <div class="desktop-icon-xp" data-window-id="window-home" ondblclick="openWindow('window-home')">
+        
+        <!-- Widgets -->
+        <div id="widget-clock" class="widget-xp widget-clock">
+            <h2 id="widget-time">12:00</h2>
+            <p id="widget-date">Monday, Jan 1</p>
+        </div>
+
+        <div id="widget-weather" class="widget-xp widget-weather">
+            <div class="city">Toronto, CA</div>
+            <div class="icon-container"><i class="fas fa-cloud-sun"></i></div>
+            <div class="temp">-2°C</div>
+            <div class="desc">Partly Cloudy</div>
+        </div>
+
+        <!-- Desktop Icons (Onclick = Single Click) -->
+        <div class="desktop-icon-xp" style="top: 20px; left: 20px;" onclick="openWindow('window-home')">
             <div class="icon">
-                <!-- My Computer / My Portfolio Icon -->
                 <svg class="icon-portfolio" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
                     <rect x="5" y="10" width="40" height="30" rx="4" fill="#3a6ea5" stroke="#fff" stroke-width="2"/>
                     <rect x="10" y="15" width="30" height="20" rx="2" fill="#fff" stroke="#3a6ea5" stroke-width="1.5"/>
@@ -380,9 +388,8 @@
             <div class="label">My Portfolio</div>
         </div>
 
-        <div class="desktop-icon-xp" data-window-id="window-about" ondblclick="openWindow('window-about')">
+        <div class="desktop-icon-xp" style="top: 100px; left: 20px;" onclick="openWindow('window-about')">
             <div class="icon">
-                <!-- My Documents / About Me Icon -->
                 <svg class="icon-user" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
                     <rect x="10" y="10" width="30" height="35" rx="3" fill="#fff" stroke="#f89406" stroke-width="2"/>
                     <rect x="12" y="12" width="26" height="31" fill="#f89406"/>
@@ -393,9 +400,8 @@
             <div class="label">About Me</div>
         </div>
 
-        <div class="desktop-icon-xp" data-window-id="window-resume" ondblclick="openWindow('window-resume')">
+        <div class="desktop-icon-xp" style="top: 180px; left: 20px;" onclick="openWindow('window-resume')">
             <div class="icon">
-                <!-- Briefcase / My Resume Icon -->
                 <svg class="icon-resume" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
                     <rect x="10" y="20" width="30" height="15" rx="3" fill="#9cbacf" stroke="#3a6ea5" stroke-width="2"/>
                     <path d="M15 20 L15 15 C15 12 18 10 25 10 C32 10 35 12 35 15 L35 20" fill="#3a6ea5" stroke="#3a6ea5" stroke-width="2"/>
@@ -406,9 +412,8 @@
             <div class="label">My Resume</div>
         </div>
         
-        <div class="desktop-icon-xp" data-window-id="window-certs" ondblclick="openWindow('window-certs')">
+        <div class="desktop-icon-xp" style="top: 260px; left: 20px;" onclick="openWindow('window-certs')">
             <div class="icon">
-                <!-- Network / Certifications Icon -->
                 <svg class="icon-certs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
                     <circle cx="25" cy="25" r="10" fill="#f89406" stroke="#fff" stroke-width="2"/>
                     <circle cx="25" cy="25" r="5" fill="#3a6ea5"/>
@@ -419,9 +424,8 @@
             <div class="label">Certifications</div>
         </div>
 
-        <div class="desktop-icon-xp" data-window-id="window-contact" ondblclick="openWindow('window-contact')">
+        <div class="desktop-icon-xp" style="top: 340px; left: 20px;" onclick="openWindow('window-contact')">
             <div class="icon">
-                <!-- Envelope / Contact Me Icon -->
                 <svg class="icon-contact" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
                     <rect x="5" y="15" width="40" height="25" rx="3" fill="#fff" stroke="#cc0000" stroke-width="2"/>
                     <path d="M5 15 L25 30 L45 15" fill="none" stroke="#cc0000" stroke-width="2"/>
@@ -435,11 +439,11 @@
 
         <!-- HOME Window -->
         <div id="window-home" class="window-xp" style="width: 50%; height: 60%; left: 10%; top: 10%; z-index: 20;">
-            <div class="window-xp-header" data-window-id="window-home">
+            <div class="window-xp-header">
                 <div class="window-xp-title">Welcome to Prasiddha's Portfolio</div>
                 <div class="window-xp-buttons">
                     <button class="btn-minimize" onclick="minimizeWindow('window-home')"><i class="fas fa-minus"></i></button>
-                    <button class="btn-maximize" onclick="maximizeWindow('window-home')"><i class="fas fa-window-maximize"></i></button>
+                    <button class="btn-maximize" onclick="toggleMaximize('window-home')"><i class="fas fa-window-maximize"></i></button>
                     <button class="btn-close" onclick="closeWindow('window-home')">X</button>
                 </div>
             </div>
@@ -460,12 +464,12 @@
         </div>
 
         <!-- ABOUT ME Window -->
-        <div id="window-about" class="window-xp" style="width: 60%; height: 80%; left: 20%; top: 5%;">
-            <div class="window-xp-header" data-window-id="window-about">
+        <div id="window-about" class="window-xp" style="width: 60%; height: 80%; left: 15%; top: 5%;">
+            <div class="window-xp-header">
                 <div class="window-xp-title">About Me - Prasiddha Thapaliya</div>
                 <div class="window-xp-buttons">
                     <button class="btn-minimize" onclick="minimizeWindow('window-about')"><i class="fas fa-minus"></i></button>
-                    <button class="btn-maximize" onclick="maximizeWindow('window-about')"><i class="fas fa-window-maximize"></i></button>
+                    <button class="btn-maximize" onclick="toggleMaximize('window-about')"><i class="fas fa-window-maximize"></i></button>
                     <button class="btn-close" onclick="closeWindow('window-about')">X</button>
                 </div>
             </div>
@@ -534,12 +538,12 @@
         </div>
 
         <!-- RESUME Window -->
-        <div id="window-resume" class="window-xp" style="width: 70%; height: 85%; left: 15%; top: 3%;">
-            <div class="window-xp-header" data-window-id="window-resume">
+        <div id="window-resume" class="window-xp" style="width: 70%; height: 85%; left: 20%; top: 5%;">
+            <div class="window-xp-header">
                 <div class="window-xp-title">Resume - Work History & Skills</div>
                 <div class="window-xp-buttons">
                     <button class="btn-minimize" onclick="minimizeWindow('window-resume')"><i class="fas fa-minus"></i></button>
-                    <button class="btn-maximize" onclick="maximizeWindow('window-resume')"><i class="fas fa-window-maximize"></i></button>
+                    <button class="btn-maximize" onclick="toggleMaximize('window-resume')"><i class="fas fa-window-maximize"></i></button>
                     <button class="btn-close" onclick="closeWindow('window-resume')">X</button>
                 </div>
             </div>
@@ -549,14 +553,13 @@
                     <i class="fas fa-cloud-download-alt"></i> Download Resume
                 </a>
                 <div class="main-timeline pt-10">
-                    <!-- Timeline Items -->
-                    <!-- NorthBridge IT Solutions -->
-                    <div class="timeline">
+                   <!-- NorthBridge -->
+                   <div class="timeline">
                         <div class="timeline-icon"><img src="https://placehold.co/40x40/3a6ea5/ffffff?text=NB" alt="NB Logo"></div>
                         <div class="timeline-content">
                             <span class="text-xs text-gray-500">Aug 2025 - Present</span>
                             <h5 class="font-bold text-sm">NorthBridge IT Solutions - Full Stack Web Developer</h5>
-                            <p class="text-xs">Developing and maintaining full stack web applications for clients.</p>
+                            <p class="text-xs">Developing and maintaining full stack web applications for clients of NorthBridge IT Solutions.</p>
                         </div>
                     </div>
                     <!-- SMS Security -->
@@ -565,7 +568,7 @@
                         <div class="timeline-content">
                             <span class="text-xs text-gray-500">Jul 2025 - Present</span>
                             <h5 class="font-bold text-sm">SMS Security - Customer Service Representative</h5>
-                            <p class="text-xs">Providing customer service support and assistance.</p>
+                            <p class="text-xs">Providing customer service support and assistance for SMS Security.</p>
                         </div>
                     </div>
                     <!-- Loblaws -->
@@ -574,7 +577,7 @@
                         <div class="timeline-content">
                             <span class="text-xs text-gray-500">Oct 2023 - Jul 2025</span>
                             <h5 class="font-bold text-sm">Loblaws - Customer Service Representative</h5>
-                            <p class="text-xs">Customer service for a hot meal replacement department.</p>
+                            <p class="text-xs">Customer service for a hot meal replacement department inside Loblaws.</p>
                         </div>
                     </div>
                     <!-- Aagaman -->
@@ -583,24 +586,25 @@
                         <div class="timeline-content">
                             <span class="text-xs text-gray-500">Jun 2022 - Jun 2023</span>
                             <h5 class="font-bold text-sm">Aagaman - Jr. QA Analyst</h5>
-                            <p class="text-xs">Software testing for mobile applications.</p>
+                            <p class="text-xs">Software testing for Aagaman mobile applications</p>
                         </div>
                     </div>
-                    <!-- Chimpvine -->
+                    <!-- Chimpvine 1 -->
                     <div class="timeline">
                         <div class="timeline-icon"><img src="https://placehold.co/40x40/38761d/ffffff?text=CV" alt="Chimpvine Logo"></div>
                         <div class="timeline-content">
                             <span class="text-xs text-gray-500">Jan 2022 - Apr 2022</span>
                             <h5 class="font-bold text-sm">Chimpvine - Game Designer & Jr. QA Analyst</h5>
-                            <p class="text-xs">Game Development using Unity and Game Testing.</p>
+                            <p class="text-xs">Game Development using Unity and Game Testing</p>
                         </div>
                     </div>
+                    <!-- Chimpvine 2 -->
                     <div class="timeline">
                         <div class="timeline-icon"><img src="https://placehold.co/40x40/38761d/ffffff?text=CV" alt="Chimpvine Logo"></div>
                         <div class="timeline-content">
                             <span class="text-xs text-gray-500">Sept 2021 - Jan 2022</span>
                             <h5 class="font-bold text-sm">Chimpvine - Game Development Intern</h5>
-                            <p class="text-xs">Developing game ideas and execution at ChimpVine.</p>
+                            <p class="text-xs">Developing game ideas and execution at ChimpVine</p>
                         </div>
                     </div>
                 </div>
@@ -642,7 +646,7 @@
                         <div class="timeline-content">
                             <span class="text-xs text-gray-500">Sept 2023 - April 2025</span>
                             <h5 class="font-bold text-sm">Seneca College</h5>
-                            <p class="text-xs">Post Graduate Certificate in Business Information Technology, Markham, Ontario, Canada.</p>
+                            <p class="text-xs">I have been studying for my post graduate degree in this college since September 2023. It's located in Markham, Ontario, Canada.</p>
                         </div>
                     </div>
                     <!-- London Metropolitan University -->
@@ -651,7 +655,16 @@
                         <div class="timeline-content">
                             <span class="text-xs text-gray-500">Apr 2018 - Mar 2019</span>
                             <h5 class="font-bold text-sm">London Metropolitan University</h5>
-                            <p class="text-xs">Bachelor's Degree in Computing.</p>
+                            <p class="text-xs">I have been studying for my bachelor's degree in this college since April 2019. It's located in Kamalpokhari, Bagbazar.</p>
+                        </div>
+                    </div>
+                    <!-- United Academy -->
+                    <div class="timeline">
+                        <div class="timeline-icon"><img src="https://placehold.co/40x40/cc0000/ffffff?text=UA" alt="United Logo"></div>
+                        <div class="timeline-content">
+                            <span class="text-xs text-gray-500">Apr 2018 - Mar 2019</span>
+                            <h5 class="font-bold text-sm">United Academy</h5>
+                            <p class="text-xs">I completed my +2 graduation from United Academy during March 2019. It's located in Kumaripati, Lalitpur.</p>
                         </div>
                     </div>
                 </div>
@@ -660,11 +673,11 @@
         
         <!-- CERTIFICATIONS Window -->
         <div id="window-certs" class="window-xp" style="width: 50%; height: 60%; left: 35%; top: 15%;">
-            <div class="window-xp-header" data-window-id="window-certs">
+            <div class="window-xp-header">
                 <div class="window-xp-title">My Certifications and Training</div>
                 <div class="window-xp-buttons">
                     <button class="btn-minimize" onclick="minimizeWindow('window-certs')"><i class="fas fa-minus"></i></button>
-                    <button class="btn-maximize" onclick="maximizeWindow('window-certs')"><i class="fas fa-window-maximize"></i></button>
+                    <button class="btn-maximize" onclick="toggleMaximize('window-certs')"><i class="fas fa-window-maximize"></i></button>
                     <button class="btn-close" onclick="closeWindow('window-certs')">X</button>
                 </div>
             </div>
@@ -675,7 +688,7 @@
                         <div class="text-3xl mr-3 text-xp-green"><i class="fas fa-check-circle"></i></div>
                         <div>
                             <h4 class="font-bold">Google IT Support Certificate <span class="text-xp-green">✅</span></h4>
-                            <p class="text-xs">Completed in Feb 2025 – foundational technical support training via Coursera.</p>
+                            <p class="text-xs">Completed in Feb 2025 – foundational technical support training by Google via Coursera.</p>
                         </div>
                     </div>
                     <div class="xp-content-box flex items-start">
@@ -699,6 +712,13 @@
                             <p class="text-xs">Certificate No. 104506475 – trained in emergency first aid response and CPR protocol.</p>
                         </div>
                     </div>
+                     <div class="xp-content-box flex items-start">
+                        <div class="text-3xl mr-3 text-xp-green"><i class="fas fa-language"></i></div>
+                        <div>
+                            <h4 class="font-bold">CELPIP – English Proficiency <span class="text-xp-green">✅</span></h4>
+                            <p class="text-xs">Canadian English Language Proficiency Index – CLB Level 10 (advanced).</p>
+                        </div>
+                    </div>
                     <div class="xp-content-box flex items-start">
                         <div class="text-3xl mr-3 text-xp-yellow"><i class="fas fa-clock"></i></div>
                         <div>
@@ -711,29 +731,28 @@
         </div>
 
         <!-- CONTACT Window -->
-        <div id="window-contact" class="window-xp" style="width: 45%; height: 75%; left: 50%; top: 10%;">
-            <div class="window-xp-header" data-window-id="window-contact">
+        <div id="window-contact" class="window-xp" style="width: 45%; height: 75%; left: 40%; top: 10%;">
+            <div class="window-xp-header">
                 <div class="window-xp-title">Contact Me - Get In Touch</div>
                 <div class="window-xp-buttons">
                     <button class="btn-minimize" onclick="minimizeWindow('window-contact')"><i class="fas fa-minus"></i></button>
-                    <button class="btn-maximize" onclick="maximizeWindow('window-contact')"><i class="fas fa-window-maximize"></i></button>
+                    <button class="btn-maximize" onclick="toggleMaximize('window-contact')"><i class="fas fa-window-maximize"></i></button>
                     <button class="btn-close" onclick="closeWindow('window-contact')">X</button>
                 </div>
             </div>
             <div class="window-xp-content">
-                <h2 class="text-xl font-bold mb-4 border-b border-gray-400 pb-1">Send a Message</h2>
-                <div class="xp-content-box mb-4">
-                    <form action="https://formspree.io/f/xvgapben" method="POST" class="space-y-4">
+                 <h2 class="text-xl font-bold mb-4 border-b border-gray-400 pb-1">Send a Message</h2>
+                 <div class="xp-content-box mb-4">
+                     <form action="https://formspree.io/f/xvgapben" method="POST" class="space-y-4">
                         <input type="hidden" name="_captcha" value="false">
-                        <input type="text" name="_gotcha" style="display:none">
                         <input name="name" type="text" placeholder="Name:" required class="w-full p-2 border border-gray-400 rounded-sm focus:ring-2 focus:ring-xp-blue">
                         <input name="email" type="email" placeholder="Email:" required class="w-full p-2 border border-gray-400 rounded-sm focus:ring-2 focus:ring-xp-blue">
                         <textarea name="message" placeholder="Message:" required rows="4" class="w-full p-2 border border-gray-400 rounded-sm focus:ring-2 focus:ring-xp-blue"></textarea>
                         <button type="submit" class="xp-button w-full bg-xp-light-blue text-white shadow-none" style="text-shadow: none;">Send Message</button>
-                    </form>
-                </div>
-                <h2 class="text-xl font-bold mt-6 mb-4 border-b border-gray-400 pb-1">Contact Information</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                     </form>
+                 </div>
+                 <h2 class="text-xl font-bold mt-6 mb-4 border-b border-gray-400 pb-1">Contact Information</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                     <div class="xp-content-box p-3">
                         <i class="fas fa-phone text-2xl text-xp-dark-blue"></i>
                         <h3 class="font-bold text-sm">Phone</h3>
@@ -773,8 +792,8 @@
         <div class="taskbar-clock-xp" id="taskbar-clock"></div>
     </div>
 
-    <!-- Start Menu (Minimal for simplicity) -->
-    <div id="start-menu" class="absolute bottom-10 left-0 w-60 bg-white border border-gray-500 shadow-xl hidden" style="border-radius: 4px; z-index: 60;">
+    <!-- Start Menu -->
+    <div id="start-menu" class="absolute bottom-10 left-0 w-60 bg-white border border-gray-500 shadow-xl hidden" style="border-radius: 4px; z-index: 10001;">
         <div class="flex items-center p-2 bg-xp-dark-blue text-white rounded-t-sm">
             <img src="https://placehold.co/32x32/3a6ea5/ffffff?text=P" class="rounded-full mr-2 border-2 border-white" alt="User Icon">
             <span class="font-bold">Prasiddha Thapaliya</span>
@@ -792,90 +811,144 @@
 
 
     <script>
-        const windows = {}; // Store window elements and state
+        const windows = {}; 
         let zIndexCounter = 20;
-        let maximizedWindowId = null;
 
-        // Initialize Windows and Taskbar
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Windows
             document.querySelectorAll('.window-xp').forEach(winEl => {
                 const id = winEl.id;
                 const title = winEl.querySelector('.window-xp-title').textContent;
                 windows[id] = {
                     element: winEl,
                     title: title,
-                    state: 'closed', // 'closed', 'minimized', 'open', 'maximized'
+                    state: 'closed', // 'closed', 'open', 'minimized', 'maximized'
+                    lastState: 'open', // Remember state before minimize (open or maximized)
                     originalBounds: null,
                     taskbarItem: null
                 };
 
-                // Add Dragging functionality
                 makeWindowDraggable(winEl);
-
-                // Add Taskbar button
                 createTaskbarItem(id);
             });
 
-            // Initial open for the Home window
+            // Initialize Widgets
+            makeElementDraggable(document.getElementById('widget-clock'));
+            makeElementDraggable(document.getElementById('widget-weather'));
+
+            // Initial open
             openWindow('window-home');
             updateClock();
             setInterval(updateClock, 1000);
 
-            // Handle start menu visibility on outside click
+            // Close start menu on outside click
             document.getElementById('desktop').addEventListener('click', (e) => {
                 const startMenu = document.getElementById('start-menu');
-                if (startMenu.classList.contains('hidden') === false) {
+                if (!startMenu.classList.contains('hidden')) {
                     const startButton = document.querySelector('.start-button-xp');
                     if (!startMenu.contains(e.target) && !startButton.contains(e.target)) {
                         startMenu.classList.add('hidden');
                     }
                 }
             });
-
-            // Home Page Typing Text Effect (using a simple emulation)
-            const words = [
-                "an IT Student",
-                "an IT Support Technician",
-                "a Web Developer",
-                "a Web Designer"
-            ];
-            let wordIndex = 0;
-            let charIndex = 0;
-            const typedTextEl = document.getElementById('typed-text');
-
-            function type() {
-                if (wordIndex >= words.length) wordIndex = 0;
-                const currentWord = words[wordIndex];
-
-                if (charIndex <= currentWord.length) {
-                    typedTextEl.textContent = currentWord.substring(0, charIndex);
-                    charIndex++;
-                    setTimeout(type, 100);
-                } else {
-                    setTimeout(erase, 1500);
-                }
-            }
-
-            function erase() {
-                const currentWord = words[wordIndex];
-                if (charIndex > 0) {
-                    typedTextEl.textContent = currentWord.substring(0, charIndex - 1);
-                    charIndex--;
-                    setTimeout(erase, 50);
-                } else {
-                    wordIndex++;
-                    setTimeout(type, 500);
-                }
-            }
-            type();
+            
+            // Typing effect
+            initTypingEffect();
         });
 
+        // --- Window Management System ---
 
-        function updateClock() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-            document.getElementById('taskbar-clock').textContent = timeString;
+        function openWindow(id) {
+            const win = windows[id];
+            
+            if (win.state === 'closed') {
+                win.element.style.display = 'block';
+                win.element.style.zIndex = ++zIndexCounter;
+                win.state = 'open';
+                // Reset position if it was closed completely? Optional.
+            } else if (win.state === 'minimized') {
+                unminimizeWindow(id);
+            } else {
+                // Already open or maximized, just focus
+                focusWindow(id);
+            }
+            updateTaskbarItem(id);
         }
+
+        function closeWindow(id) {
+            const win = windows[id];
+            win.element.style.display = 'none';
+            win.state = 'closed';
+            updateTaskbarItem(id);
+        }
+
+        function minimizeWindow(id) {
+            const win = windows[id];
+            if (win.state !== 'minimized') {
+                // Save current state so we know whether to restore to 'open' or 'maximized'
+                win.lastState = win.state; 
+                win.element.style.display = 'none';
+                win.state = 'minimized';
+                updateTaskbarItem(id);
+            }
+        }
+
+        function unminimizeWindow(id) {
+            const win = windows[id];
+            win.element.style.display = 'block';
+            win.element.style.zIndex = ++zIndexCounter;
+            
+            // Restore to the state it was in before minimizing
+            if (win.lastState === 'maximized') {
+                 win.state = 'maximized';
+                 // Ensure visual style is maximized
+                 win.element.style.top = '0';
+                 win.element.style.left = '0';
+                 win.element.style.width = '100%';
+                 win.element.style.height = 'calc(100% - 38px)';
+            } else {
+                win.state = 'open';
+                // Bounds are already preserved in CSS properties (top/left/width/height)
+            }
+            updateTaskbarItem(id);
+        }
+
+        function toggleMaximize(id) {
+            const win = windows[id];
+            if (win.state === 'maximized') {
+                // Restore Down
+                win.element.style.top = win.originalBounds.top;
+                win.element.style.left = win.originalBounds.left;
+                win.element.style.width = win.originalBounds.width;
+                win.element.style.height = win.originalBounds.height;
+                win.originalBounds = null;
+                win.state = 'open';
+            } else {
+                // Maximize
+                // Save bounds
+                win.originalBounds = {
+                    top: win.element.style.top,
+                    left: win.element.style.left,
+                    width: win.element.style.width,
+                    height: win.element.style.height
+                };
+                win.element.style.top = '0';
+                win.element.style.left = '0';
+                win.element.style.width = '100%';
+                win.element.style.height = 'calc(100% - 38px)';
+                win.element.style.zIndex = ++zIndexCounter;
+                win.state = 'maximized';
+            }
+            updateTaskbarItem(id);
+        }
+
+        function focusWindow(id) {
+            const win = windows[id];
+            win.element.style.zIndex = ++zIndexCounter;
+            updateTaskbarItem(id);
+        }
+
+        // --- Taskbar Logic ---
 
         function toggleStartMenu() {
             const menu = document.getElementById('start-menu');
@@ -888,170 +961,151 @@
             const item = document.createElement('div');
             item.className = 'taskbar-item-xp';
             item.innerHTML = `<i class="fas fa-folder mr-2"></i> ${win.title}`;
-            item.setAttribute('data-window-id', id);
-            item.onclick = () => {
-                if (win.state === 'open' || win.state === 'maximized') {
-                    minimizeWindow(id);
-                } else {
-                    restoreWindow(id);
-                }
-            };
+            item.onclick = () => handleTaskbarClick(id);
             taskbarEl.appendChild(item);
             win.taskbarItem = item;
             updateTaskbarItem(id);
+        }
+
+        function handleTaskbarClick(id) {
+            const win = windows[id];
+            
+            if (win.state === 'minimized') {
+                // If minimized, open it (restore to previous state)
+                unminimizeWindow(id);
+            } else if (win.state === 'closed') {
+                openWindow(id);
+            } else {
+                // It is visible (open or maximized)
+                if (win.element.style.zIndex == zIndexCounter) {
+                    // It is currently on top/focused -> Minimize it
+                    minimizeWindow(id);
+                } else {
+                    // It is obscured or not focused -> Bring to front
+                    focusWindow(id);
+                }
+            }
         }
 
         function updateTaskbarItem(id) {
             const win = windows[id];
             if (win.state === 'open' || win.state === 'maximized') {
                 win.taskbarItem.classList.add('active');
+                // Optional: distinct style if focused?
+                if (win.element.style.zIndex == zIndexCounter) {
+                    win.taskbarItem.style.fontWeight = 'bold';
+                } else {
+                    win.taskbarItem.style.fontWeight = 'normal';
+                }
             } else {
                 win.taskbarItem.classList.remove('active');
+                win.taskbarItem.style.fontWeight = 'normal';
             }
         }
 
-        function openWindow(id) {
-            const win = windows[id];
-            if (win.state === 'minimized' || win.state === 'closed') {
-                win.element.style.display = 'block';
-                win.element.style.zIndex = ++zIndexCounter;
-                win.state = 'open';
-                updateTaskbarItem(id);
-            }
-            // Bring to front if already open
-            win.element.style.zIndex = ++zIndexCounter;
-        }
-
-        function closeWindow(id) {
-            const win = windows[id];
-            win.element.style.display = 'none';
-            win.state = 'closed';
-            updateTaskbarItem(id);
-            if (maximizedWindowId === id) {
-                maximizedWindowId = null;
-            }
-        }
-
-        function minimizeWindow(id) {
-            const win = windows[id];
-            if (win.state === 'maximized') {
-                // Restore before minimizing to save correct state
-                restoreWindow(id, false);
-            }
-            win.element.style.display = 'none';
-            win.state = 'minimized';
-            updateTaskbarItem(id);
-        }
-
-        function restoreWindow(id, bringToFront = true) {
-            const win = windows[id];
-            if (win.state === 'maximized' && win.originalBounds) {
-                // Restore from maximized
-                win.element.style.top = win.originalBounds.top;
-                win.element.style.left = win.originalBounds.left;
-                win.element.style.width = win.originalBounds.width;
-                win.element.style.height = win.originalBounds.height;
-                win.originalBounds = null;
-                maximizedWindowId = null;
-            } else if (win.state === 'minimized') {
-                // Restore from minimized
-                win.element.style.display = 'block';
-            }
-            win.state = 'open';
-            if (bringToFront) {
-                win.element.style.zIndex = ++zIndexCounter;
-            }
-            updateTaskbarItem(id);
-        }
-
-        function maximizeWindow(id) {
-            const win = windows[id];
-            if (win.state === 'maximized') {
-                restoreWindow(id);
-                return;
-            }
-            
-            // If another window is maximized, restore it first
-            if (maximizedWindowId && maximizedWindowId !== id) {
-                restoreWindow(maximizedWindowId);
-            }
-
-            // Save original bounds before maximizing
-            win.originalBounds = {
-                top: win.element.style.top,
-                left: win.element.style.left,
-                width: win.element.style.width,
-                height: win.element.style.height
-            };
-
-            // Maximize
-            win.element.style.top = '0';
-            win.element.style.left = '0';
-            win.element.style.width = '100%';
-            win.element.style.height = `calc(100% - 38px)`; // Full height minus taskbar
-            win.element.style.display = 'block';
-            win.element.style.zIndex = ++zIndexCounter;
-            win.state = 'maximized';
-            maximizedWindowId = id;
-            updateTaskbarItem(id);
-        }
-
-        // --- Window Dragging Logic ---
+        // --- Dragging Logic ---
 
         function makeWindowDraggable(elmnt) {
             const header = elmnt.querySelector('.window-xp-header');
             if (!header) return;
+            setupDrag(elmnt, header);
+            // Focus on click
+            elmnt.addEventListener('mousedown', () => {
+                if(windows[elmnt.id].state !== 'minimized') focusWindow(elmnt.id);
+            });
+            header.ondblclick = () => toggleMaximize(elmnt.id);
+        }
 
+        function makeElementDraggable(elmnt) {
+            setupDrag(elmnt, elmnt);
+            elmnt.addEventListener('mousedown', () => {
+                 elmnt.style.zIndex = ++zIndexCounter;
+            });
+        }
+
+        function setupDrag(elmnt, handle) {
             let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-
-            header.onmousedown = dragMouseDown;
-            header.ondblclick = () => maximizeWindow(elmnt.id);
+            handle.onmousedown = dragMouseDown;
 
             function dragMouseDown(e) {
                 e = e || window.event;
+                if(['BUTTON', 'INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
                 e.preventDefault();
 
-                if (windows[elmnt.id].state === 'maximized') return;
+                // Do not drag if maximized
+                if (windows[elmnt.id] && windows[elmnt.id].state === 'maximized') return;
 
                 elmnt.style.zIndex = ++zIndexCounter;
-
-                // get the mouse cursor position at startup:
                 pos3 = e.clientX;
                 pos4 = e.clientY;
                 document.onmouseup = closeDragElement;
-                // call a function whenever the cursor moves:
                 document.onmousemove = elementDrag;
             }
 
             function elementDrag(e) {
                 e = e || window.event;
                 e.preventDefault();
-                // calculate the new cursor position:
                 pos1 = pos3 - e.clientX;
                 pos2 = pos4 - e.clientY;
                 pos3 = e.clientX;
                 pos4 = e.clientY;
 
-                // set the element's new position:
                 let newTop = elmnt.offsetTop - pos2;
                 let newLeft = elmnt.offsetLeft - pos1;
 
-                // Keep window within bounds
-                newTop = Math.max(0, Math.min(newTop, window.innerHeight - elmnt.offsetHeight - 38));
-                newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - elmnt.offsetWidth));
+                newTop = Math.max(0, Math.min(newTop, window.innerHeight - 50)); 
+                newLeft = Math.max(-elmnt.offsetWidth + 50, Math.min(newLeft, window.innerWidth - 50));
 
                 elmnt.style.top = newTop + "px";
                 elmnt.style.left = newLeft + "px";
             }
 
             function closeDragElement() {
-                // stop moving when mouse button is released:
                 document.onmouseup = null;
                 document.onmousemove = null;
             }
         }
+
+        // --- Utils ---
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+            document.getElementById('taskbar-clock').textContent = timeString;
+            document.getElementById('widget-time').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+            document.getElementById('widget-date').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+        }
+
+        function initTypingEffect() {
+            const words = ["an IT Student", "an IT Support Technician", "a Web Developer", "a Web Designer"];
+            let wordIndex = 0;
+            let charIndex = 0;
+            const typedTextEl = document.getElementById('typed-text');
+            if(!typedTextEl) return;
+
+            function type() {
+                if (wordIndex >= words.length) wordIndex = 0;
+                const currentWord = words[wordIndex];
+                if (charIndex <= currentWord.length) {
+                    typedTextEl.textContent = currentWord.substring(0, charIndex);
+                    charIndex++;
+                    setTimeout(type, 100);
+                } else {
+                    setTimeout(erase, 1500);
+                }
+            }
+            function erase() {
+                const currentWord = words[wordIndex];
+                if (charIndex > 0) {
+                    typedTextEl.textContent = currentWord.substring(0, charIndex - 1);
+                    charIndex--;
+                    setTimeout(erase, 50);
+                } else {
+                    wordIndex++;
+                    setTimeout(type, 500);
+                }
+            }
+            type();
+        }
     </script>
-
 </body>
-
 </html>
