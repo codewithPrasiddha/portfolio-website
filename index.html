@@ -1,820 +1,982 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prasiddha Thapaliya - Portfolio XP</title>
-    
-    <!-- Tailwind CSS -->
+    <title>Prasiddha Thapaliya - Windows XP Portfolio</title>
+    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel for JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
+    <!-- Load Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Load Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Custom scrollbar for that retro feel */
-        ::-webkit-scrollbar {
-            width: 12px;
-            height: 12px;
+        /* Base XP Blue Palette */
+        :root {
+            --xp-blue: #3a6ea5;
+            --xp-dark-blue: #003669;
+            --xp-light-blue: #7092be;
+            --xp-green: #38761d;
+            --xp-red: #cc0000;
+            --xp-yellow: #f89406;
+            --xp-shadow: 1px 1px 0 #000;
         }
-        ::-webkit-scrollbar-track {
-            background: #ECE9D8;
-            border-left: 1px solid #ACA899;
+
+        /* Set Inter font globally */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--xp-blue);
+            background-image: url('https://placehold.co/1920x1080/003669/ffffff?text=Blue+Background'); /* Solid blue background */
+            background-size: cover;
+            min-height: 100vh;
+            overflow: hidden; /* Prevent body scroll */
         }
-        ::-webkit-scrollbar-thumb {
-            background-color: #ACA899;
-            border: 1px solid white;
-            box-shadow: inset 1px 0 0 white, inset 0 1px 0 white;
+
+        /* --- Window Styles (XP Luna Theme Emulation) --- */
+
+        .window-xp {
+            position: absolute;
+            min-width: 300px;
+            min-height: 200px;
+            background-color: #ece9d8;
+            border: 1px solid var(--xp-blue);
+            box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
+            border-radius: 6px;
+            overflow: hidden;
+            display: none;
+            z-index: 10;
         }
-        /* Disable selection for desktop feel */
-        .select-none {
+
+        .window-xp-header {
+            cursor: move;
+            height: 30px;
+            padding: 2px;
+            background-color: var(--xp-blue);
+            background-image: linear-gradient(to right, var(--xp-blue), var(--xp-light-blue));
+            color: white;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             user-select: none;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
         }
-        /* Pixelated scaling for icons */
-        .pixelated {
-            image-rendering: pixelated;
+
+        .window-xp-title {
+            padding-left: 8px;
+            text-shadow: var(--xp-shadow);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
+
+        .window-xp-buttons button {
+            width: 20px;
+            height: 20px;
+            margin-right: 3px;
+            border: 1px solid #000;
+            border-radius: 3px;
+            font-size: 10px;
+            line-height: 1;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #000;
+            box-shadow: 1px 1px 0px white inset, -1px -1px 0px gray inset;
+            cursor: pointer;
+        }
+
+        .window-xp-buttons .btn-minimize { background-color: #ece9d8; }
+        .window-xp-buttons .btn-maximize { background-color: #ece9d8; }
+        .window-xp-buttons .btn-close { background-color: #f77; }
+        .window-xp-buttons .btn-close:hover { background-color: var(--xp-red); color: white; }
+
+        .window-xp-content {
+            padding: 10px;
+            overflow-y: auto;
+            color: #000;
+            max-height: calc(100% - 30px);
+            height: calc(100% - 30px);
+            box-sizing: border-box;
+        }
+
+        /* --- Taskbar Styles --- */
+
+        .taskbar-xp {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 38px;
+            background-color: var(--xp-blue);
+            border-top: 1px solid #779dbe;
+            box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.3);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            padding: 2px 4px;
+        }
+
+        .start-button-xp {
+            height: 34px;
+            width: 90px;
+            background-color: var(--xp-green);
+            background-image: linear-gradient(to top, #489a25, var(--xp-green));
+            border: 1px solid #000;
+            border-radius: 4px;
+            box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #4f8b28 inset;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-shadow: var(--xp-shadow);
+            margin-right: 4px;
+            padding: 0 4px;
+        }
+        .start-button-xp:active {
+            box-shadow: -1px -1px 0 #fff inset, 1px 1px 0 #4f8b28 inset;
+        }
+
+        .taskbar-buttons-xp {
+            flex-grow: 1;
+            display: flex;
+            height: 100%;
+            overflow-x: auto;
+            padding-top: 2px;
+        }
+
+        .taskbar-item-xp {
+            height: 30px;
+            min-width: 100px;
+            max-width: 160px;
+            margin-right: 4px;
+            padding: 0 8px;
+            background-color: #72a5d2;
+            background-image: linear-gradient(to top, #72a5d2, #3a6ea5);
+            border: 1px solid #000;
+            border-radius: 4px;
+            box-shadow: 1px 1px 0 #a9c5e3 inset, -1px -1px 0 #3e5a77 inset;
+            color: white;
+            text-shadow: var(--xp-shadow);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
+
+        .taskbar-item-xp.active {
+            background-image: linear-gradient(to bottom, #72a5d2, #3a6ea5);
+            box-shadow: -1px -1px 0 #a9c5e3 inset, 1px 1px 0 #3e5a77 inset;
+        }
+
+        .taskbar-clock-xp {
+            min-width: 80px;
+            height: 34px;
+            padding: 0 8px;
+            background-color: #9cbacf;
+            border: 1px solid #000;
+            border-radius: 4px;
+            box-shadow: 1px 1px 0 #c2dae9 inset, -1px -1px 0 #7e9bb4 inset;
+            color: var(--xp-dark-blue);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+        }
+
+        /* --- Desktop Icon Styles --- */
+
+        .desktop-icon-xp {
+            width: 80px;
+            margin: 10px;
+            text-align: center;
+            color: white;
+            text-shadow: var(--xp-shadow);
+            cursor: pointer;
+            user-select: none;
+            /* Allow double-click */
+        }
+
+        .desktop-icon-xp:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        .desktop-icon-xp .icon {
+            font-size: 40px;
+            margin-bottom: 5px;
+            color: #f89406; /* Yellow/Orange accent */
+            text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+        }
+
+        .desktop-icon-xp .label {
+            font-size: 12px;
+            word-wrap: break-word;
+        }
+
+        /* XP Scrollbar Look (Basic Emulation) */
+        .window-xp-content::-webkit-scrollbar {
+            width: 16px;
+        }
+        .window-xp-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border: 1px solid #c0c0c0;
+        }
+        .window-xp-content::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border: 1px solid #a0a0a0;
+        }
+        .window-xp-content::-webkit-scrollbar-thumb:hover {
+            background: #a0a0a0;
+        }
+
+        /* Content Styling */
+        .xp-content-box {
+            border: 1px solid #808080;
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #808080 inset;
+            border-radius: 2px;
+        }
+        .xp-button {
+            padding: 4px 12px;
+            background-color: #e0e0e0;
+            border: 1px solid #000;
+            border-radius: 3px;
+            box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #808080 inset;
+            cursor: pointer;
+            font-weight: 500;
+            text-align: center;
+            margin: 5px;
+            display: inline-block;
+        }
+        .xp-button:active {
+            box-shadow: -1px -1px 0 #fff inset, 1px 1px 0 #808080 inset;
+            transform: translateY(1px);
+        }
+
+        /* Timeline styles adjustment for XP look */
+        .main-timeline {
+            position: relative;
+        }
+        .main-timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: #808080;
+            margin-left: -1px;
+        }
+        .timeline {
+            margin-bottom: 20px;
+            position: relative;
+            display: flex;
+            width: 100%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+        .timeline:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .timeline-content {
+            background: #fcfcfc;
+            border: 1px solid #c0c0c0;
+            padding: 10px;
+            width: 45%;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        .timeline:nth-child(odd) .timeline-content { margin-right: 5%; }
+        .timeline:nth-child(even) .timeline-content { margin-left: 5%; }
+
+        .timeline-icon {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 2px solid var(--xp-blue);
+            border-radius: 50%;
+            z-index: 1;
+            margin-left: -20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .timeline-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
     </style>
 </head>
-<body class="overflow-hidden bg-black text-xs font-sans">
-    <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+<body>
 
-        // --- ICON COMPONENTS (Inline SVGs to replace lucide-react) ---
-        const XIcon = ({ size = 24, color = "currentColor", strokeWidth = 2, ...props }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        );
-        const Minus = ({ size = 24, color = "currentColor", strokeWidth = 2, ...props }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M5 12h14"/></svg>
-        );
-        const Square = ({ size = 24, color = "currentColor", strokeWidth = 2, ...props }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/></svg>
-        );
-        const Maximize2 = ({ size = 24, color = "currentColor", strokeWidth = 2, ...props }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
-        );
-        const MoreHorizontal = ({ size = 24, color = "currentColor", strokeWidth = 2, ...props }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-        );
+    <!-- Main Desktop Area -->
+    <div id="desktop" class="absolute inset-0 pb-10">
+        <!-- Desktop Icons -->
+        <div class="desktop-icon-xp" data-window-id="window-home" ondblclick="openWindow('window-home')">
+            <div class="icon"><i class="fas fa-desktop"></i></div>
+            <div class="label">My Portfolio</div>
+        </div>
 
-        // --- ASSETS (XP ICONS) ---
-        const ICONS = {
-            computer: "https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/computer.png",
-            documents: "https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/folder.png",
-            ie: "https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/internet-explorer.png",
-            outlook: "https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/outlook.png",
-            notepad: "https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/notepad.png",
-            paint: "https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/paint.png",
-            controlPanel: "https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/control-panel.png",
-            trash: "https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/trash-empty.png",
-            word: "https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/word.png",
-            folderOpen: "https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/folder-open.png",
-            mediaPlayer: "https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/media-player.png",
-            user: "https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/user.png"
-        };
+        <div class="desktop-icon-xp" data-window-id="window-about" ondblclick="openWindow('window-about')">
+            <div class="icon"><i class="fas fa-user-tie"></i></div>
+            <div class="label">About Me</div>
+        </div>
 
-        // --- DATA ---
-        const PORTFOLIO_DATA = {
-            profile: {
-                name: "Prasiddha Thapaliya",
-                title: "IT Student | Web Developer | IT Support",
-                email: "th.prasiddha@gmail.com",
-                phone: "+1 (437) 673-0997",
-                address: "Scarborough, Ontario, Canada",
-                socials: {
-                    linkedin: "https://www.linkedin.com/in/prasiddha-thapaliya-5461081b4/",
-                    youtube: "https://www.youtube.com/channel/UCj9i7CfECqgi78IpMabppgQ",
-                    facebook: "https://www.facebook.com/prasiddha.crozero"
-                }
-            },
-            about: {
-                bio: [
-                    "Prasiddha Thapaliya is a Full Stack Web Developer and IT Support Specialist based in Canada. He leads web initiatives as a Full Stack Web Developer at NorthBridge IT Solutions (primary role), with hands-on experience in technical support, system administration, QA testing, and web development.",
-                    "He has completed a graduate certificate in Business Information Technology from Seneca College and a bachelor’s degree in Computing from London Metropolitan University.",
-                    "Passionate about building reliable systems and solving technical problems, Prasiddha is committed to staying on top of evolving technologies. From configuring secure web servers and managing Linux-based environments to deploying containerized microservices."
-                ],
-                stats: [
-                    { label: "Experience", value: "2+ Years" },
-                    { label: "Projects", value: "10+ Completed" }
-                ]
-            },
-            resume: {
-                work: [
-                    {
-                        company: "NorthBridge IT Solutions",
-                        role: "Full Stack Web Developer",
-                        date: "Aug 2025 - Present",
-                        desc: "Developing and maintaining full stack web applications for clients of NorthBridge IT Solutions."
-                    },
-                    {
-                        company: "SMS Security",
-                        role: "Customer Service Representative",
-                        date: "Jul 2025 - Present",
-                        desc: "Providing customer service support and assistance for SMS Security."
-                    },
-                    {
-                        company: "Loblaws",
-                        role: "Customer Service Representative",
-                        date: "Oct 2023 - Jul 2025",
-                        desc: "Customer service for a hot meal replacement department inside Loblaws."
-                    },
-                    {
-                        company: "Aagaman",
-                        role: "Jr. QA Analyst",
-                        date: "Jun 2022 - Jun 2023",
-                        desc: "Software testing for Aagaman mobile applications."
-                    },
-                    {
-                        company: "Chimpvine",
-                        role: "Game Designer & Jr. QA Analyst",
-                        date: "Jan 2022 - Apr 2022",
-                        desc: "Game Development using Unity and Game Testing."
+        <div class="desktop-icon-xp" data-window-id="window-resume" ondblclick="openWindow('window-resume')">
+            <div class="icon"><i class="fas fa-award"></i></div>
+            <div class="label">My Resume</div>
+        </div>
+        
+        <div class="desktop-icon-xp" data-window-id="window-certs" ondblclick="openWindow('window-certs')">
+            <div class="icon"><i class="fas fa-certificate"></i></div>
+            <div class="label">Certifications</div>
+        </div>
+
+        <div class="desktop-icon-xp" data-window-id="window-contact" ondblclick="openWindow('window-contact')">
+            <div class="icon"><i class="fas fa-paper-plane"></i></div>
+            <div class="label">Contact Me</div>
+        </div>
+
+        <!-- Hidden Windows (Containers for Portfolio Content) -->
+
+        <!-- HOME Window -->
+        <div id="window-home" class="window-xp" style="width: 50%; height: 60%; left: 10%; top: 10%; z-index: 20;">
+            <div class="window-xp-header" data-window-id="window-home">
+                <div class="window-xp-title">Welcome to Prasiddha's Portfolio</div>
+                <div class="window-xp-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('window-home')"><i class="fas fa-minus"></i></button>
+                    <button class="btn-maximize" onclick="maximizeWindow('window-home')"><i class="fas fa-window-maximize"></i></button>
+                    <button class="btn-close" onclick="closeWindow('window-home')">X</button>
+                </div>
+            </div>
+            <div class="window-xp-content">
+                <div class="xp-content-box text-center">
+                    <img src="https://placehold.co/95x95/3a6ea5/ffffff?text=Avatar" alt="Prasiddha Avatar" class="rounded-full mx-auto mb-4" style="width: 95px; height: 95px; object-fit: cover;">
+                    <h1 class="text-3xl font-extrabold text-xp-dark-blue">Hello I'm Prasiddha Thapaliya</h1>
+                    <p class="mt-2 text-lg font-semibold">
+                        <span id="typed-text"></span>
+                    </p>
+                    <div class="mt-6 space-x-4">
+                        <button class="xp-button" onclick="openWindow('window-contact')"><i class="fas fa-briefcase"></i> Hire Me</button>
+                        <button class="xp-button" onclick="openWindow('window-resume')"><i class="fas fa-award"></i> RESUME</button>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600">A Full Stack Web Developer & IT Support Specialist based in Canada.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABOUT ME Window -->
+        <div id="window-about" class="window-xp" style="width: 60%; height: 80%; left: 20%; top: 5%;">
+            <div class="window-xp-header" data-window-id="window-about">
+                <div class="window-xp-title">About Me - Prasiddha Thapaliya</div>
+                <div class="window-xp-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('window-about')"><i class="fas fa-minus"></i></button>
+                    <button class="btn-maximize" onclick="maximizeWindow('window-about')"><i class="fas fa-window-maximize"></i></button>
+                    <button class="btn-close" onclick="closeWindow('window-about')">X</button>
+                </div>
+            </div>
+            <div class="window-xp-content">
+                <h2 class="text-xl font-bold mb-4 border-b border-gray-400 pb-1">About Prasiddha</h2>
+                <div class="xp-content-box flex flex-wrap lg:flex-nowrap">
+                    <div class="w-full lg:w-2/3 pr-4">
+                        <h3 class="text-lg font-bold">Prasiddha Thapaliya</h3>
+                        <p class="text-sm text-gray-600 mb-4"><i class="fas fa-map-marker-alt"></i> Canada - Full Stack Web Developer & IT Support Specialist</p>
+                        <p class="mb-3 text-sm">
+                            <b>Prasiddha Thapaliya</b> is a Full Stack Web Developer and IT Support Specialist based in Canada. He leads web initiatives as a <b>Full Stack Web Developer at NorthBridge IT Solutions</b>, with hands-on experience in technical support, system administration, QA testing, and web development. He has completed a graduate certificate in <b>Business Information Technology</b> from <b>Seneca College</b> and a bachelor’s degree in <b>Computing</b> from <b>London Metropolitan University</b>.
+                        </p>
+                        <p class="mb-3 text-sm">
+                            Passionate about building reliable systems and solving technical problems, Prasiddha is committed to staying on top of evolving technologies. He's focused on delivering scalable, user-focused solutions and is always open to learning and collaborating.
+                        </p>
+                        <ul class="flex justify-around mt-4 text-center">
+                            <li class="w-1/2">
+                                <div class="text-xp-blue text-2xl"><i class="fas fa-briefcase"></i></div>
+                                <h6 class="font-bold">2+ Years</h6>
+                                <p class="text-xs">Experience</p>
+                            </li>
+                            <li class="w-1/2">
+                                <div class="text-xp-blue text-2xl"><i class="fas fa-tasks"></i></div>
+                                <h6 class="font-bold">10+ Projects</h6>
+                                <p class="text-xs">Completed</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="w-full lg:w-1/3 mt-4 lg:mt-0 flex justify-center items-center">
+                        <img src="https://placehold.co/200x200/ece9d8/3a6ea5?text=Prasiddha+Photo" class="w-full max-w-[200px] border border-gray-500 p-1" alt="Image of Prasiddha">
+                    </div>
+                </div>
+
+                <h2 class="text-xl font-bold mt-6 mb-4 border-b border-gray-400 pb-1">Services</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="xp-content-box flex items-start">
+                        <div class="text-xp-blue text-3xl mr-3"><i class="fas fa-code"></i></div>
+                        <div>
+                            <h4 class="font-bold">Web Development</h4>
+                            <p class="text-xs">Can create a beautiful, secure, fast, responsive and functional website according to your need.</p>
+                        </div>
+                    </div>
+                    <div class="xp-content-box flex items-start">
+                        <div class="text-xp-blue text-3xl mr-3"><i class="fas fa-headset"></i></div>
+                        <div>
+                            <h4 class="font-bold">IT Support</h4>
+                            <p class="text-xs">Can provide debugging and diagnostics services for software and hardware based problems.</p>
+                        </div>
+                    </div>
+                    <div class="xp-content-box flex items-start">
+                        <div class="text-xp-blue text-3xl mr-3"><i class="fas fa-handshake"></i></div>
+                        <div>
+                            <h4 class="font-bold">Consultant</h4>
+                            <p class="text-xs">Can offer advice and expertise to individuals to help them improve their business performance.</p>
+                        </div>
+                    </div>
+                    <div class="xp-content-box flex items-start">
+                        <div class="text-xp-blue text-3xl mr-3"><i class="fas fa-laptop-code"></i></div>
+                        <div>
+                            <h4 class="font-bold">Software Development</h4>
+                            <p class="text-xs">Can create any type of desktop/web-based software according to your needs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESUME Window -->
+        <div id="window-resume" class="window-xp" style="width: 70%; height: 85%; left: 15%; top: 3%;">
+            <div class="window-xp-header" data-window-id="window-resume">
+                <div class="window-xp-title">Resume - Work History & Skills</div>
+                <div class="window-xp-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('window-resume')"><i class="fas fa-minus"></i></button>
+                    <button class="btn-maximize" onclick="maximizeWindow('window-resume')"><i class="fas fa-window-maximize"></i></button>
+                    <button class="btn-close" onclick="closeWindow('window-resume')">X</button>
+                </div>
+            </div>
+            <div class="window-xp-content">
+                <h2 class="text-xl font-bold mb-4 border-b border-gray-400 pb-1">Professional Work History</h2>
+                <a href="https://www.linkedin.com/in/prasiddha-thapaliya-5461081b4/" target="_blank" class="xp-button float-right">
+                    <i class="fas fa-cloud-download-alt"></i> Download Resume
+                </a>
+                <div class="main-timeline pt-10">
+                    <!-- Timeline Items -->
+                    <!-- NorthBridge IT Solutions -->
+                    <div class="timeline">
+                        <div class="timeline-icon"><img src="https://placehold.co/40x40/3a6ea5/ffffff?text=NB" alt="NB Logo"></div>
+                        <div class="timeline-content">
+                            <span class="text-xs text-gray-500">Aug 2025 - Present</span>
+                            <h5 class="font-bold text-sm">NorthBridge IT Solutions - Full Stack Web Developer</h5>
+                            <p class="text-xs">Developing and maintaining full stack web applications for clients.</p>
+                        </div>
+                    </div>
+                    <!-- SMS Security -->
+                    <div class="timeline">
+                        <div class="timeline-icon"><img src="https://placehold.co/40x40/72a5d2/ffffff?text=SMS" alt="SMS Logo"></div>
+                        <div class="timeline-content">
+                            <span class="text-xs text-gray-500">Jul 2025 - Present</span>
+                            <h5 class="font-bold text-sm">SMS Security - Customer Service Representative</h5>
+                            <p class="text-xs">Providing customer service support and assistance.</p>
+                        </div>
+                    </div>
+                    <!-- Loblaws -->
+                    <div class="timeline">
+                        <div class="timeline-icon"><img src="https://placehold.co/40x40/cc0000/ffffff?text=LB" alt="Loblaws Logo"></div>
+                        <div class="timeline-content">
+                            <span class="text-xs text-gray-500">Oct 2023 - Jul 2025</span>
+                            <h5 class="font-bold text-sm">Loblaws - Customer Service Representative</h5>
+                            <p class="text-xs">Customer service for a hot meal replacement department.</p>
+                        </div>
+                    </div>
+                    <!-- Aagaman -->
+                    <div class="timeline">
+                        <div class="timeline-icon"><img src="https://placehold.co/40x40/f89406/ffffff?text=AG" alt="Aagaman Logo"></div>
+                        <div class="timeline-content">
+                            <span class="text-xs text-gray-500">Jun 2022 - Jun 2023</span>
+                            <h5 class="font-bold text-sm">Aagaman - Jr. QA Analyst</h5>
+                            <p class="text-xs">Software testing for mobile applications.</p>
+                        </div>
+                    </div>
+                    <!-- Chimpvine -->
+                    <div class="timeline">
+                        <div class="timeline-icon"><img src="https://placehold.co/40x40/38761d/ffffff?text=CV" alt="Chimpvine Logo"></div>
+                        <div class="timeline-content">
+                            <span class="text-xs text-gray-500">Jan 2022 - Apr 2022</span>
+                            <h5 class="font-bold text-sm">Chimpvine - Game Designer & Jr. QA Analyst</h5>
+                            <p class="text-xs">Game Development using Unity and Game Testing.</p>
+                        </div>
+                    </div>
+                    <div class="timeline">
+                        <div class="timeline-icon"><img src="https://placehold.co/40x40/38761d/ffffff?text=CV" alt="Chimpvine Logo"></div>
+                        <div class="timeline-content">
+                            <span class="text-xs text-gray-500">Sept 2021 - Jan 2022</span>
+                            <h5 class="font-bold text-sm">Chimpvine - Game Development Intern</h5>
+                            <p class="text-xs">Developing game ideas and execution at ChimpVine.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="text-xl font-bold mt-6 mb-4 border-b border-gray-400 pb-1">Skills & Education</h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <!-- Technical Skills -->
+                    <div class="xp-content-box">
+                        <h4 class="font-bold mb-2">Technical Skills</h4>
+                        <div class="space-y-2">
+                            <div class="text-sm">🖥️ Technical Support & Systems <span class="float-right font-semibold">95%</span>
+                                <div class="bg-gray-300 h-2 rounded-full"><div class="bg-xp-blue h-2 rounded-full" style="width: 95%;"></div></div>
+                            </div>
+                            <div class="text-sm">🌐 Networking, Infrastructure & Web Technologies <span class="float-right font-semibold">85%</span>
+                                <div class="bg-gray-300 h-2 rounded-full"><div class="bg-xp-blue h-2 rounded-full" style="width: 85%;"></div></div>
+                            </div>
+                            <div class="text-sm">🛠️ Scripting, Development & DevOps <span class="float-right font-semibold">80%</span>
+                                <div class="bg-gray-300 h-2 rounded-full"><div class="bg-xp-blue h-2 rounded-full" style="width: 80%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Language Skills -->
+                    <div class="xp-content-box">
+                        <h4 class="font-bold mb-2">Language Skills</h4>
+                        <ul class="space-y-2">
+                            <li class="flex justify-between text-sm">English <span><i class="fas fa-star text-xp-yellow"></i><i class="fas fa-star text-xp-yellow"></i><i class="fas fa-star text-xp-yellow"></i><i class="fas fa-star text-xp-yellow"></i><i class="fas fa-star text-xp-yellow"></i> Fluent</span></li>
+                            <li class="flex justify-between text-sm">Nepali <span><i class="fas fa-star text-xp-yellow"></i><i class="fas fa-star text-xp-yellow"></i><i class="fas fa-star text-xp-yellow"></i><i class="fas fa-star text-xp-yellow"></i><i class="fas fa-star-half-alt text-xp-yellow"></i> Native</span></li>
+                            <li class="flex justify-between text-sm">Indian <span><i class="fas fa-star text-xp-yellow"></i><i class="fas fa-star text-xp-yellow"></i><i class="fas fa-star text-xp-yellow"></i><i class="fas fa-star text-xp-yellow"></i><i class="fas fa-star-half-alt text-xp-yellow"></i> Conversional</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4 class="font-bold mt-6 mb-4">Education History</h4>
+                <div class="main-timeline">
+                    <!-- Seneca College -->
+                    <div class="timeline">
+                        <div class="timeline-icon"><img src="https://placehold.co/40x40/f77/ffffff?text=SC" alt="Seneca Logo"></div>
+                        <div class="timeline-content">
+                            <span class="text-xs text-gray-500">Sept 2023 - April 2025</span>
+                            <h5 class="font-bold text-sm">Seneca College</h5>
+                            <p class="text-xs">Post Graduate Certificate in Business Information Technology, Markham, Ontario, Canada.</p>
+                        </div>
+                    </div>
+                    <!-- London Metropolitan University -->
+                    <div class="timeline">
+                        <div class="timeline-icon"><img src="https://placehold.co/40x40/f89406/ffffff?text=LMU" alt="LMU Logo"></div>
+                        <div class="timeline-content">
+                            <span class="text-xs text-gray-500">Apr 2018 - Mar 2019</span>
+                            <h5 class="font-bold text-sm">London Metropolitan University</h5>
+                            <p class="text-xs">Bachelor's Degree in Computing.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CERTIFICATIONS Window -->
+        <div id="window-certs" class="window-xp" style="width: 50%; height: 60%; left: 35%; top: 15%;">
+            <div class="window-xp-header" data-window-id="window-certs">
+                <div class="window-xp-title">My Certifications and Training</div>
+                <div class="window-xp-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('window-certs')"><i class="fas fa-minus"></i></button>
+                    <button class="btn-maximize" onclick="maximizeWindow('window-certs')"><i class="fas fa-window-maximize"></i></button>
+                    <button class="btn-close" onclick="closeWindow('window-certs')">X</button>
+                </div>
+            </div>
+            <div class="window-xp-content">
+                <h2 class="text-xl font-bold mb-4 border-b border-gray-400 pb-1">Verified & In-Progress Credentials</h2>
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="xp-content-box flex items-start">
+                        <div class="text-3xl mr-3 text-xp-green"><i class="fas fa-check-circle"></i></div>
+                        <div>
+                            <h4 class="font-bold">Google IT Support Certificate <span class="text-xp-green">✅</span></h4>
+                            <p class="text-xs">Completed in Feb 2025 – foundational technical support training via Coursera.</p>
+                        </div>
+                    </div>
+                    <div class="xp-content-box flex items-start">
+                        <div class="text-3xl mr-3 text-xp-green"><i class="fab fa-microsoft"></i></div>
+                        <div>
+                            <h4 class="font-bold">Microsoft IT Support Specialist <span class="text-xp-green">✅</span></h4>
+                            <p class="text-xs">Completed in Feb 2025 – certified in core support skills including troubleshooting and deployment.</p>
+                        </div>
+                    </div>
+                    <div class="xp-content-box flex items-start">
+                        <div class="text-3xl mr-3 text-xp-green"><i class="fas fa-shield-alt"></i></div>
+                        <div>
+                            <h4 class="font-bold">Introduction to Cybersecurity <span class="text-xp-green">✅</span></h4>
+                            <p class="text-xs">A Coursera credential covering basic cybersecurity principles and network security awareness.</p>
+                        </div>
+                    </div>
+                    <div class="xp-content-box flex items-start">
+                        <div class="text-3xl mr-3 text-xp-blue"><i class="fas fa-briefcase-medical"></i></div>
+                        <div>
+                            <h4 class="font-bold">Standard First Aid & CPR <span class="text-xp-green">✅</span></h4>
+                            <p class="text-xs">Certificate No. 104506475 – trained in emergency first aid response and CPR protocol.</p>
+                        </div>
+                    </div>
+                    <div class="xp-content-box flex items-start">
+                        <div class="text-3xl mr-3 text-xp-yellow"><i class="fas fa-clock"></i></div>
+                        <div>
+                            <h4 class="font-bold">CompTIA A+ <span class="text-xp-yellow">⏳</span></h4>
+                            <p class="text-xs">In progress – targeting industry-standard certification for IT support and hardware troubleshooting.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTACT Window -->
+        <div id="window-contact" class="window-xp" style="width: 45%; height: 75%; left: 50%; top: 10%;">
+            <div class="window-xp-header" data-window-id="window-contact">
+                <div class="window-xp-title">Contact Me - Get In Touch</div>
+                <div class="window-xp-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('window-contact')"><i class="fas fa-minus"></i></button>
+                    <button class="btn-maximize" onclick="maximizeWindow('window-contact')"><i class="fas fa-window-maximize"></i></button>
+                    <button class="btn-close" onclick="closeWindow('window-contact')">X</button>
+                </div>
+            </div>
+            <div class="window-xp-content">
+                <h2 class="text-xl font-bold mb-4 border-b border-gray-400 pb-1">Send a Message</h2>
+                <div class="xp-content-box mb-4">
+                    <form action="https://formspree.io/f/xvgapben" method="POST" class="space-y-4">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="text" name="_gotcha" style="display:none">
+                        <input name="name" type="text" placeholder="Name:" required class="w-full p-2 border border-gray-400 rounded-sm focus:ring-2 focus:ring-xp-blue">
+                        <input name="email" type="email" placeholder="Email:" required class="w-full p-2 border border-gray-400 rounded-sm focus:ring-2 focus:ring-xp-blue">
+                        <textarea name="message" placeholder="Message:" required rows="4" class="w-full p-2 border border-gray-400 rounded-sm focus:ring-2 focus:ring-xp-blue"></textarea>
+                        <button type="submit" class="xp-button w-full bg-xp-light-blue text-white shadow-none" style="text-shadow: none;">Send Message</button>
+                    </form>
+                </div>
+                <h2 class="text-xl font-bold mt-6 mb-4 border-b border-gray-400 pb-1">Contact Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="xp-content-box p-3">
+                        <i class="fas fa-phone text-2xl text-xp-dark-blue"></i>
+                        <h3 class="font-bold text-sm">Phone</h3>
+                        <p class="text-xs">+1 (437)673-0997</p>
+                    </div>
+                    <div class="xp-content-box p-3">
+                        <i class="far fa-envelope-open text-2xl text-xp-dark-blue"></i>
+                        <h3 class="font-bold text-sm">Email</h3>
+                        <p class="text-xs">th.prasiddha@gmail.com</p>
+                    </div>
+                    <div class="xp-content-box p-3">
+                        <i class="fas fa-map-marker-alt text-2xl text-xp-dark-blue"></i>
+                        <h3 class="font-bold text-sm">Address</h3>
+                        <p class="text-xs">Scarborough, Ontario, Canada</p>
+                    </div>
+                </div>
+
+                <h4 class="font-bold mt-6 mb-2">Follow Prasiddha Thapaliya:</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.facebook.com/prasiddha.crozero" target="_blank" class="xp-button text-xl"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.linkedin.com/in/prasiddha-thapaliya-5461081b4/" target="_blank" class="xp-button text-xl"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.youtube.com/channel/UCj9i7CfECqgi78IpMabppgQ" target="_blank" class="xp-button text-xl"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Taskbar -->
+    <div class="taskbar-xp">
+        <button class="start-button-xp" onclick="toggleStartMenu()">
+            <i class="fab fa-windows mr-2"></i> start
+        </button>
+        <div id="taskbar-buttons" class="taskbar-buttons-xp">
+            <!-- Taskbar items will be injected here -->
+        </div>
+        <div class="taskbar-clock-xp" id="taskbar-clock"></div>
+    </div>
+
+    <!-- Start Menu (Minimal for simplicity) -->
+    <div id="start-menu" class="absolute bottom-10 left-0 w-60 bg-white border border-gray-500 shadow-xl hidden" style="border-radius: 4px; z-index: 60;">
+        <div class="flex items-center p-2 bg-xp-dark-blue text-white rounded-t-sm">
+            <img src="https://placehold.co/32x32/3a6ea5/ffffff?text=P" class="rounded-full mr-2 border-2 border-white" alt="User Icon">
+            <span class="font-bold">Prasiddha Thapaliya</span>
+        </div>
+        <div class="p-2 space-y-1">
+            <button class="w-full text-left p-1 hover:bg-xp-light-blue hover:text-white rounded-sm" onclick="openWindow('window-home'); toggleStartMenu();"><i class="fas fa-desktop w-5 mr-2"></i> My Portfolio</button>
+            <button class="w-full text-left p-1 hover:bg-xp-light-blue hover:text-white rounded-sm" onclick="openWindow('window-about'); toggleStartMenu();"><i class="fas fa-user-tie w-5 mr-2"></i> About Me</button>
+            <button class="w-full text-left p-1 hover:bg-xp-light-blue hover:text-white rounded-sm" onclick="openWindow('window-resume'); toggleStartMenu();"><i class="fas fa-award w-5 mr-2"></i> My Resume</button>
+            <button class="w-full text-left p-1 hover:bg-xp-light-blue hover:text-white rounded-sm" onclick="openWindow('window-certs'); toggleStartMenu();"><i class="fas fa-certificate w-5 mr-2"></i> Certifications</button>
+            <div class="border-t border-gray-300 my-1"></div>
+            <button class="w-full text-left p-1 hover:bg-xp-light-blue hover:text-white rounded-sm" onclick="openWindow('window-contact'); toggleStartMenu();"><i class="fas fa-paper-plane w-5 mr-2"></i> Contact Me</button>
+            <button class="w-full text-left p-1 hover:bg-xp-red hover:text-white rounded-sm" onclick="alert('Goodbye! Thanks for visiting my portfolio.'); window.location.reload();"><i class="fas fa-power-off w-5 mr-2"></i> Shut Down</button>
+        </div>
+    </div>
+
+
+    <script>
+        const windows = {}; // Store window elements and state
+        let zIndexCounter = 20;
+        let maximizedWindowId = null;
+
+        // Initialize Windows and Taskbar
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.window-xp').forEach(winEl => {
+                const id = winEl.id;
+                const title = winEl.querySelector('.window-xp-title').textContent;
+                windows[id] = {
+                    element: winEl,
+                    title: title,
+                    state: 'closed', // 'closed', 'minimized', 'open', 'maximized'
+                    originalBounds: null,
+                    taskbarItem: null
+                };
+
+                // Add Dragging functionality
+                makeWindowDraggable(winEl);
+
+                // Add Taskbar button
+                createTaskbarItem(id);
+            });
+
+            // Initial open for the Home window
+            openWindow('window-home');
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            // Handle start menu visibility on outside click
+            document.getElementById('desktop').addEventListener('click', (e) => {
+                const startMenu = document.getElementById('start-menu');
+                if (startMenu.classList.contains('hidden') === false) {
+                    const startButton = document.querySelector('.start-button-xp');
+                    if (!startMenu.contains(e.target) && !startButton.contains(e.target)) {
+                        startMenu.classList.add('hidden');
                     }
-                ],
-                education: [
-                    { school: "Seneca College", degree: "Business Information Technology", date: "Sept 2023 - April 2025" },
-                    { school: "London Metropolitan University", degree: "Bachelors in Computing", date: "Apr 2018 - Mar 2019" },
-                    { school: "United Academy", degree: "+2 Graduation", date: "Apr 2018 - Mar 2019" }
-                ]
-            },
-            skills: [
-                { name: "Technical Support & Systems", level: 95 },
-                { name: "Networking & Infrastructure", level: 85 },
-                { name: "Scripting & DevOps", level: 80 },
-                { name: "English (Fluent)", level: 100 },
-                { name: "Nepali (Native)", level: 100 }
-            ],
-            certifications: [
-                "Google IT Support Certificate",
-                "Microsoft IT Support Specialist",
-                "Introduction to Cybersecurity",
-                "Standard First Aid & CPR",
-                "CELPIP – English Proficiency (Level 10)",
-                "CompTIA A+ (In Progress)"
-            ],
-            services: [
-                { title: "Web Development", desc: "Create beautiful, secure, fast, responsive and functional websites." },
-                { title: "Consultant", desc: "Offer advice and expertise to improve business performance." },
-                { title: "Software Development", desc: "Create desktop/web-based software according to needs." },
-                { title: "IT Support", desc: "Debugging and diagnostics services for software and hardware." }
-            ],
-            testimonials: [
-                { name: "Nikesh Shah", role: "Business Owner", text: "He provides security updates regularly and instant supports." },
-                { name: "Abhisek Jha", role: "CEO, HAMRO IT", text: "Prasiddha is a helping hand for startup business." },
-                { name: "Nicolai Trepp", role: "Freelancer", text: "Thank you for developing my personal website. I'm very grateful." }
-            ]
-        };
+                }
+            });
 
-        // --- HOOKS ---
-        const useDraggable = (id, initialPos, onFocus, isMaximized) => {
-            const [pos, setPos] = useState(initialPos);
-            const [dragging, setDragging] = useState(false);
-            const [rel, setRel] = useState({ x: 0, y: 0 });
+            // Home Page Typing Text Effect (using a simple emulation)
+            const words = [
+                "an IT Student",
+                "an IT Support Technician",
+                "a Web Developer",
+                "a Web Designer"
+            ];
+            let wordIndex = 0;
+            let charIndex = 0;
+            const typedTextEl = document.getElementById('typed-text');
 
-            const onMouseDown = (e) => {
-                if (e.button !== 0 || isMaximized) return; 
-                onFocus();
-                setDragging(true);
-                setRel({
-                    x: e.clientX - pos.x,
-                    y: e.clientY - pos.y
-                });
-                e.stopPropagation();
-                e.preventDefault();
-            };
+            function type() {
+                if (wordIndex >= words.length) wordIndex = 0;
+                const currentWord = words[wordIndex];
 
-            const onMouseMove = (e) => {
-                if (!dragging) return;
-                setPos({
-                    x: e.clientX - rel.x,
-                    y: e.clientY - rel.y
-                });
-                e.stopPropagation();
-                e.preventDefault();
-            };
-
-            const onMouseUp = () => {
-                setDragging(false);
-            };
-
-            useEffect(() => {
-                if (dragging) {
-                    window.addEventListener('mousemove', onMouseMove);
-                    window.addEventListener('mouseup', onMouseUp);
+                if (charIndex <= currentWord.length) {
+                    typedTextEl.textContent = currentWord.substring(0, charIndex);
+                    charIndex++;
+                    setTimeout(type, 100);
                 } else {
-                    window.removeEventListener('mousemove', onMouseMove);
-                    window.removeEventListener('mouseup', onMouseUp);
+                    setTimeout(erase, 1500);
                 }
-                return () => {
-                    window.removeEventListener('mousemove', onMouseMove);
-                    window.removeEventListener('mouseup', onMouseUp);
-                };
-            }, [dragging]);
+            }
 
-            return { pos, onMouseDown, dragging };
-        };
+            function erase() {
+                const currentWord = words[wordIndex];
+                if (charIndex > 0) {
+                    typedTextEl.textContent = currentWord.substring(0, charIndex - 1);
+                    charIndex--;
+                    setTimeout(erase, 50);
+                } else {
+                    wordIndex++;
+                    setTimeout(type, 500);
+                }
+            }
+            type();
+        });
 
-        // --- COMPONENTS ---
 
-        const DesktopIcon = ({ label, iconSrc, onClick }) => (
-            <div 
-                className="flex flex-col items-center gap-1 w-20 md:w-24 p-2 cursor-pointer hover:bg-blue-600/30 border border-transparent hover:border-blue-300/50 rounded group mb-2"
-                onClick={onClick}
-            >
-                <img src={iconSrc} alt={label} className="w-8 h-8 md:w-10 md:h-10 drop-shadow-md pixelated" />
-                <span className="text-white text-[10px] md:text-xs font-medium drop-shadow-md text-center bg-transparent px-1 rounded group-hover:bg-blue-700/50 line-clamp-2 leading-tight shadow-black">
-                    {label}
-                </span>
-            </div>
-        );
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+            document.getElementById('taskbar-clock').textContent = timeString;
+        }
 
-        const WindowFrame = ({ windowState, onClose, onMinimize, onMaximize, onFocus, children }) => {
-            const { pos, onMouseDown, dragging } = useDraggable(windowState.id, windowState.position, onFocus, windowState.isMaximized);
+        function toggleStartMenu() {
+            const menu = document.getElementById('start-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function createTaskbarItem(id) {
+            const win = windows[id];
+            const taskbarEl = document.getElementById('taskbar-buttons');
+            const item = document.createElement('div');
+            item.className = 'taskbar-item-xp';
+            item.innerHTML = `<i class="fas fa-folder mr-2"></i> ${win.title}`;
+            item.setAttribute('data-window-id', id);
+            item.onclick = () => {
+                if (win.state === 'open' || win.state === 'maximized') {
+                    minimizeWindow(id);
+                } else {
+                    restoreWindow(id);
+                }
+            };
+            taskbarEl.appendChild(item);
+            win.taskbarItem = item;
+            updateTaskbarItem(id);
+        }
+
+        function updateTaskbarItem(id) {
+            const win = windows[id];
+            if (win.state === 'open' || win.state === 'maximized') {
+                win.taskbarItem.classList.add('active');
+            } else {
+                win.taskbarItem.classList.remove('active');
+            }
+        }
+
+        function openWindow(id) {
+            const win = windows[id];
+            if (win.state === 'minimized' || win.state === 'closed') {
+                win.element.style.display = 'block';
+                win.element.style.zIndex = ++zIndexCounter;
+                win.state = 'open';
+                updateTaskbarItem(id);
+            }
+            // Bring to front if already open
+            win.element.style.zIndex = ++zIndexCounter;
+        }
+
+        function closeWindow(id) {
+            const win = windows[id];
+            win.element.style.display = 'none';
+            win.state = 'closed';
+            updateTaskbarItem(id);
+            if (maximizedWindowId === id) {
+                maximizedWindowId = null;
+            }
+        }
+
+        function minimizeWindow(id) {
+            const win = windows[id];
+            if (win.state === 'maximized') {
+                // Restore before minimizing to save correct state
+                restoreWindow(id, false);
+            }
+            win.element.style.display = 'none';
+            win.state = 'minimized';
+            updateTaskbarItem(id);
+        }
+
+        function restoreWindow(id, bringToFront = true) {
+            const win = windows[id];
+            if (win.state === 'maximized' && win.originalBounds) {
+                // Restore from maximized
+                win.element.style.top = win.originalBounds.top;
+                win.element.style.left = win.originalBounds.left;
+                win.element.style.width = win.originalBounds.width;
+                win.element.style.height = win.originalBounds.height;
+                win.originalBounds = null;
+                maximizedWindowId = null;
+            } else if (win.state === 'minimized') {
+                // Restore from minimized
+                win.element.style.display = 'block';
+            }
+            win.state = 'open';
+            if (bringToFront) {
+                win.element.style.zIndex = ++zIndexCounter;
+            }
+            updateTaskbarItem(id);
+        }
+
+        function maximizeWindow(id) {
+            const win = windows[id];
+            if (win.state === 'maximized') {
+                restoreWindow(id);
+                return;
+            }
             
-            if (!windowState.isOpen) return null;
+            // If another window is maximized, restore it first
+            if (maximizedWindowId && maximizedWindowId !== id) {
+                restoreWindow(maximizedWindowId);
+            }
 
-            const isMobile = window.innerWidth < 768;
-            
-            const frameStyle = windowState.isMaximized 
-                ? { top: 0, left: 0, width: '100%', height: 'calc(100% - 32px)', transform: 'none' } 
-                : { top: pos.y, left: pos.x, width: windowState.size.w, height: windowState.size.h };
-
-            return (
-                <div 
-                    className={`absolute flex flex-col bg-[#ECE9D8] rounded-t-lg shadow-2xl border-[3px] border-[#0054E3] overflow-hidden ${windowState.isMinimized ? 'hidden' : ''}`}
-                    style={{
-                        ...frameStyle,
-                        zIndex: windowState.zIndex,
-                        transition: dragging ? 'none' : 'width 0.1s, height 0.1s, top 0.1s, left 0.1s'
-                    }}
-                    onMouseDown={onFocus}
-                >
-                    <div 
-                        className={`h-8 bg-gradient-to-r from-[#0054E3] via-[#226ce8] to-[#0054E3] flex items-center justify-between px-2 select-none ${windowState.isMaximized ? '' : 'cursor-move'}`}
-                        onMouseDown={onMouseDown}
-                        onDoubleClick={onMaximize}
-                    >
-                        <div className="flex items-center gap-2 text-white font-bold text-sm drop-shadow-md truncate">
-                            <img src={windowState.icon} alt="" className="w-4 h-4" />
-                            <span style={{ textShadow: '1px 1px 1px rgba(0,0,0,0.5)' }}>{windowState.title}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                            <button onClick={(e) => { e.stopPropagation(); onMinimize(); }} className="w-5 h-5 bg-[#226ce8] hover:bg-[#3c81f0] border border-white/30 rounded flex items-center justify-center shadow-inner opacity-80 hover:opacity-100">
-                                <Minus size={14} color="white" strokeWidth={3} />
-                            </button>
-                            <button onClick={(e) => { e.stopPropagation(); onMaximize(); }} className="w-5 h-5 bg-[#226ce8] hover:bg-[#3c81f0] border border-white/30 rounded flex items-center justify-center shadow-inner opacity-80 hover:opacity-100">
-                                {windowState.isMaximized ? <Maximize2 size={12} color="white" strokeWidth={3} /> : <Square size={12} color="white" strokeWidth={3} />}
-                            </button>
-                            <button onClick={(e) => { e.stopPropagation(); onClose(); }} className="w-5 h-5 bg-[#E81123] hover:bg-[#f04553] border border-white/30 rounded flex items-center justify-center shadow-inner ml-1 opacity-90 hover:opacity-100">
-                                <XIcon size={14} color="white" strokeWidth={3} />
-                            </button>
-                        </div>
-                    </div>
-                    <div className="flex-1 bg-white overflow-auto relative p-0">
-                        {children}
-                    </div>
-                </div>
-            );
-        };
-
-        // --- CONTENT BLOCKS ---
-
-        const AboutContent = () => (
-            <div className="bg-white min-h-full">
-                <div className="bg-[#ECE9D8] border-b border-gray-300 p-1 flex items-center gap-2 mb-2 px-3">
-                    <span className="text-gray-600 text-xs">Address</span>
-                    <div className="flex-1 bg-white border border-gray-400 px-2 py-0.5 text-sm text-gray-700 font-sans shadow-inner flex items-center">
-                        <img src={ICONS.ie} alt="ie" className="w-3 h-3 mr-2" />
-                        http://www.prasiddha.com/about
-                    </div>
-                    <div className="flex items-center gap-1 cursor-pointer">
-                        <div className="bg-green-500 text-white px-2 py-0.5 text-xs rounded border border-green-700 shadow-sm flex items-center gap-1 hover:brightness-110">Go</div>
-                    </div>
-                </div>
-                
-                <div className="p-4 max-w-3xl mx-auto font-sans">
-                    <div className="flex flex-col md:flex-row gap-6 items-start">
-                        <div className="bg-blue-50 p-1 border border-blue-200 shadow-sm rotate-1 mx-auto md:mx-0">
-                            <div className="w-32 h-32 bg-gray-200 flex items-center justify-center text-gray-400 overflow-hidden">
-                                <img src={ICONS.user} alt="Profile" className="w-16 h-16 opacity-50" />
-                            </div>
-                            <div className="text-center text-xs text-gray-500 mt-1">Prasiddha.jpg</div>
-                        </div>
-                        <div className="flex-1">
-                            <h1 className="text-2xl font-bold text-gray-800 mb-2 border-b-2 border-blue-500 pb-1">
-                                {PORTFOLIO_DATA.profile.name}
-                            </h1>
-                            <p className="text-blue-600 font-semibold mb-4">{PORTFOLIO_DATA.profile.title}</p>
-                            
-                            <div className="text-sm text-gray-700 space-y-3 leading-relaxed text-justify">
-                                {PORTFOLIO_DATA.about.bio.map((para, i) => (
-                                    <p key={i}>{para}</p>
-                                ))}
-                            </div>
-
-                            <div className="mt-6 grid grid-cols-2 gap-4">
-                                {PORTFOLIO_DATA.about.stats.map((stat, i) => (
-                                    <div key={i} className="bg-[#eff7ff] p-3 rounded border border-[#0054E3]/30">
-                                        <div className="text-2xl font-bold text-[#0054E3]">{stat.value}</div>
-                                        <div className="text-xs text-gray-500 uppercase tracking-wide">{stat.label}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="mt-8">
-                        <h2 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2 border-b border-gray-300 pb-2">
-                            Services
-                        </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {PORTFOLIO_DATA.services.map((s, i) => (
-                                <div key={i} className="border border-gray-200 p-3 hover:bg-[#FFFFE1] hover:border-[#F2C05F] transition-colors cursor-default">
-                                    <h3 className="font-bold text-sm text-gray-800">{s.title}</h3>
-                                    <p className="text-xs text-gray-600 mt-1">{s.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-
-        const ResumeContent = () => (
-            <div className="bg-[#6D6D6D] min-h-full p-2 md:p-6 font-serif overflow-auto">
-                <div className="bg-white shadow-2xl max-w-[21cm] mx-auto min-h-[29.7cm] p-8 md:p-12 text-sm relative">
-                    <div className="absolute top-0 left-0 w-full h-4 bg-gray-100 border-b border-gray-300 flex text-[8px] text-gray-400 pt-1 overflow-hidden">
-                        {Array.from({length: 40}).map((_, i) => <div key={i} className="flex-1 border-r border-gray-300 text-center">{i}</div>)}
-                    </div>
-
-                    <div className="mt-4 border-b-2 border-gray-800 pb-4 mb-6">
-                        <h1 className="text-3xl font-bold text-gray-900 uppercase tracking-wider">{PORTFOLIO_DATA.profile.name}</h1>
-                        <div className="flex flex-wrap gap-4 text-gray-600 mt-2 text-xs">
-                            <span>{PORTFOLIO_DATA.profile.email}</span>
-                            <span>•</span>
-                            <span>{PORTFOLIO_DATA.profile.phone}</span>
-                            <span>•</span>
-                            <span>{PORTFOLIO_DATA.profile.address}</span>
-                        </div>
-                    </div>
-
-                    <section className="mb-8">
-                        <h2 className="text-base font-bold text-[#0054E3] uppercase border-b border-gray-300 mb-4 pb-1">Professional Experience</h2>
-                        <div className="space-y-6">
-                            {PORTFOLIO_DATA.resume.work.map((job, i) => (
-                                <div key={i}>
-                                    <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-1">
-                                        <h3 className="font-bold text-gray-800 text-base">{job.role}</h3>
-                                        <span className="text-gray-500 text-xs italic bg-gray-100 px-2 rounded">{job.date}</span>
-                                    </div>
-                                    <div className="text-[#0054E3] font-medium text-sm mb-2">{job.company}</div>
-                                    <p className="text-gray-700 leading-snug">{job.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-
-                    <section className="mb-8">
-                        <h2 className="text-base font-bold text-[#0054E3] uppercase border-b border-gray-300 mb-4 pb-1">Education</h2>
-                        <div className="space-y-4">
-                            {PORTFOLIO_DATA.resume.education.map((edu, i) => (
-                                <div key={i}>
-                                    <div className="flex justify-between items-baseline">
-                                        <h3 className="font-bold text-gray-800">{edu.school}</h3>
-                                        <span className="text-gray-500 text-xs italic">{edu.date}</span>
-                                    </div>
-                                    <div className="text-gray-700 text-xs">{edu.degree}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-                </div>
-            </div>
-        );
-
-        const SkillsContent = () => (
-            <div className="bg-[#ECE9D8] min-h-full p-4 flex flex-col gap-4">
-                <div className="flex items-center gap-4 mb-2">
-                    <img src={ICONS.controlPanel} alt="cp" className="w-12 h-12" />
-                    <div>
-                        <h2 className="text-xl font-bold text-gray-800">System Skills</h2>
-                        <p className="text-sm text-gray-600">View and update technical competencies.</p>
-                    </div>
-                </div>
-                
-                <div className="w-full h-px bg-white shadow-sm mb-2"></div>
-
-                <div className="grid grid-cols-1 gap-4">
-                    {PORTFOLIO_DATA.skills.map((skill, i) => (
-                        <div key={i} className="bg-white p-3 border border-gray-400 shadow-sm flex items-center gap-4 hover:bg-[#F7F7F7] transition-colors">
-                            <div className="bg-[#ECE9D8] p-2 rounded border border-white shadow-inner">
-                                <img src={ICONS.controlPanel} alt="chip" className="w-6 h-6 grayscale opacity-70"/>
-                            </div>
-                            <div className="flex-1">
-                                <div className="flex justify-between mb-1">
-                                    <span className="font-bold text-sm text-gray-700">{skill.name}</span>
-                                    <span className="text-xs text-[#0054E3] font-bold">{skill.level}%</span>
-                                </div>
-                                <div className="h-5 bg-[#E6E6E6] border border-[#828790] relative shadow-inner">
-                                    <div className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#1EBC3C] to-[#04D12D]" style={{ width: `${skill.level}%` }}></div>
-                                    <div className="absolute top-0 left-0 w-full h-full flex">
-                                        {Array.from({ length: 15 }).map((_, idx) => (
-                                            <div key={idx} className="flex-1 border-r border-[#ECE9D8]/40 h-full"></div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        );
-
-        const ContactContent = () => (
-            <div className="bg-white min-h-full flex flex-col font-sans text-sm">
-                <div className="bg-[#ECE9D8] p-2 border-b border-[#9C9C9C] flex items-center gap-2 shadow-sm">
-                    <button className="flex flex-col items-center px-3 py-1 hover:bg-[#DADADA] border border-transparent hover:border-[#9C9C9C] active:bg-[#C0C0C0] active:shadow-inner rounded-sm transition-all group">
-                        <img src={ICONS.outlook} alt="send" className="w-8 h-8 group-active:translate-y-px"/>
-                        <span className="text-[11px] mt-1 text-gray-700">Send</span>
-                    </button>
-                    <div className="w-px h-10 bg-[#9C9C9C] mx-1 border-r border-white"></div>
-                    <div className="text-xl font-bold text-[#A0A0A0] italic px-2" style={{fontFamily: 'Impact, sans-serif'}}>Outlook Express</div>
-                </div>
-                
-                <div className="bg-[#ECE9D8] px-4 py-2 border-b border-[#9C9C9C]">
-                    <div className="flex items-center gap-2 mb-2">
-                        <span className="text-gray-600 w-16 text-right text-xs">To:</span>
-                        <div className="flex-1 bg-white border border-[#7F9DB9] px-2 py-0.5 flex items-center gap-2 shadow-inner">
-                            <img src={ICONS.user} alt="user" className="w-3 h-3 opacity-60"/>
-                            {PORTFOLIO_DATA.profile.email}
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <span className="text-gray-600 w-16 text-right text-xs">Subject:</span>
-                        <div className="flex-1 bg-white border border-[#7F9DB9] px-2 py-0.5 shadow-inner font-bold text-gray-800">
-                            Project Inquiry
-                        </div>
-                    </div>
-                </div>
-                
-                <div className="flex-1 p-4 bg-white relative">
-                    <div className="absolute top-4 right-4 bg-[#FFFFE1] border border-[#F2C05F] p-3 shadow-md max-w-xs transform rotate-1">
-                        <p className="font-bold text-gray-700 mb-1 border-b border-[#F2C05F] pb-1">Quick Contact</p>
-                        <p className="text-xs mt-1">📞 {PORTFOLIO_DATA.profile.phone}</p>
-                        <div className="mt-2 flex gap-3 justify-center">
-                            <a href={PORTFOLIO_DATA.profile.socials.linkedin} target="_blank" rel="noreferrer" className="text-blue-600 hover:scale-110 transition-transform">LinkedIn</a>
-                            <a href={PORTFOLIO_DATA.profile.socials.youtube} target="_blank" rel="noreferrer" className="text-red-600 hover:scale-110 transition-transform">YouTube</a>
-                        </div>
-                    </div>
-
-                    <textarea 
-                        className="w-full h-full resize-none outline-none text-gray-800 font-mono text-base p-2"
-                        placeholder="Type your message here..."
-                        defaultValue={`Hi Prasiddha,\n\nI saw your Windows XP portfolio and would love to discuss a potential project!\n\nBest regards,\n[Your Name]`}
-                    ></textarea>
-                </div>
-            </div>
-        );
-
-        const CertificationsContent = () => (
-            <div className="bg-white min-h-full flex flex-col">
-                <div className="flex flex-1 flex-col sm:flex-row">
-                    <div className="w-full sm:w-48 bg-[#6A78B4] p-3 hidden sm:flex flex-col gap-3 bg-gradient-to-b from-[#7A8BC8] to-[#6373B0]">
-                        <div className="bg-white rounded-t-lg overflow-hidden shadow-sm">
-                            <div className="bg-gradient-to-r from-[#226ce8] to-[#0054E3] text-white font-bold px-3 py-1 flex items-center justify-between cursor-default">
-                                <span className="text-xs">Picture Tasks</span>
-                                <div className="w-4 h-4 bg-white/20 rounded-full flex items-center justify-center cursor-pointer hover:bg-red-400"><Minus size={10} strokeWidth={4}/></div>
-                            </div>
-                            <div className="p-3 text-[11px] text-[#00156E] space-y-1 bg-[#D3E5FA]">
-                                <div className="hover:underline cursor-pointer flex items-center gap-1"><span className="text-gray-400">📄</span> View as slide show</div>
-                                <div className="hover:underline cursor-pointer flex items-center gap-1"><span className="text-gray-400">🖨️</span> Print this picture</div>
-                            </div>
-                        </div>
-                        
-                        <div className="bg-white rounded-t-lg overflow-hidden shadow-sm">
-                            <div className="bg-gradient-to-r from-[#226ce8] to-[#0054E3] text-white font-bold px-3 py-1 flex items-center justify-between cursor-default">
-                                <span className="text-xs">File and Folder Tasks</span>
-                                <div className="w-4 h-4 bg-white/20 rounded-full flex items-center justify-center cursor-pointer hover:bg-red-400"><Minus size={10} strokeWidth={4}/></div>
-                            </div>
-                            <div className="p-3 text-[11px] text-[#00156E] space-y-1 bg-[#D3E5FA]">
-                                <div className="hover:underline cursor-pointer flex items-center gap-1"><img src={ICONS.folderOpen} className="w-3 h-3"/> Make a new folder</div>
-                                <div className="hover:underline cursor-pointer flex items-center gap-1"><span className="text-gray-400">🌐</span> Publish to the Web</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="flex-1 bg-white p-4 overflow-y-auto">
-                        <h3 className="text-gray-600 text-xs mb-4 border-b border-gray-200 pb-1">Certifications</h3>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                            {PORTFOLIO_DATA.certifications.map((cert, i) => (
-                                <div key={i} className="group flex flex-col items-center gap-2 cursor-pointer p-2 hover:bg-[#E8F4FF] border border-transparent hover:border-[#B3D6F6] rounded">
-                                    <div className="w-20 h-16 bg-white shadow-md border border-gray-300 flex items-center justify-center p-2 relative group-hover:opacity-90">
-                                        <img src="https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/certificate.png" alt="cert" className="w-10 h-10 object-contain" 
-                                            onError={(e) => {e.currentTarget.src = ICONS.documents}} />
-                                    </div>
-                                    <div className="text-center text-[11px] text-gray-700 font-medium group-hover:text-[#0054E3] line-clamp-3 w-full leading-tight">
-                                        {cert}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-
-        const TestimonialsContent = () => (
-            <div className="bg-white min-h-full font-mono text-sm flex flex-col">
-                <div className="flex text-xs border-b border-gray-200 bg-[#ECE9D8] select-none">
-                    <span className="px-2 py-1 hover:bg-[#316AC5] hover:text-white cursor-pointer">File</span>
-                    <span className="px-2 py-1 hover:bg-[#316AC5] hover:text-white cursor-pointer">Edit</span>
-                    <span className="px-2 py-1 hover:bg-[#316AC5] hover:text-white cursor-pointer">Format</span>
-                    <span className="px-2 py-1 hover:bg-[#316AC5] hover:text-white cursor-pointer">Help</span>
-                </div>
-                <div className="p-4 flex-1 overflow-auto bg-white">
-                    {PORTFOLIO_DATA.testimonials.map((t, i) => (
-                        <div key={i} className="mb-6 font-mono text-sm text-black">
-                            <p className="border-b border-dashed border-gray-300 mb-1 pb-1 inline-block text-blue-800 font-bold">Review_0{i+1}.txt</p>
-                            <p className="whitespace-pre-wrap mb-2">"{t.text}"</p>
-                            <p className="text-gray-500 text-xs italic">
-                                Signed: {t.name}, {t.role}
-                            </p>
-                            <br/>
-                        </div>
-                    ))}
-                    <div className="animate-pulse h-4 w-2 bg-black inline-block"></div>
-                </div>
-            </div>
-        );
-
-        // --- MAIN APP ---
-
-        const App = () => {
-            const [windows, setWindows] = useState([]);
-            const [activeId, setActiveId] = useState(null);
-            const [startOpen, setStartOpen] = useState(false);
-            const [currentTime, setCurrentTime] = useState(new Date());
-
-            useEffect(() => {
-                const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-                return () => clearInterval(timer);
-            }, []);
-
-            const openWindow = (id, title, icon) => {
-                setStartOpen(false);
-                if (windows.find(w => w.id === id)) {
-                    setActiveId(id);
-                    setWindows(prev => prev.map(w => 
-                        w.id === id ? { ...w, isMinimized: false, zIndex: Math.max(...prev.map(ww => ww.zIndex), 0) + 1 } : w
-                    ));
-                    return;
-                }
-
-                const isMobile = window.innerWidth < 768;
-                let size = isMobile ? { w: '95%', h: '80%' } : { w: 650, h: 500 };
-                let pos = isMobile ? { x: 10, y: 10 } : { x: 50 + (windows.length * 30), y: 50 + (windows.length * 30) };
-
-                if (id === 'testimonials') size = isMobile ? { w: '90%', h: '60%' } : { w: 400, h: 350 };
-                if (id === 'resume') size = isMobile ? { w: '95%', h: '85%' } : { w: 750, h: 650 };
-
-                const newWindow = {
-                    id,
-                    title,
-                    icon,
-                    isOpen: true,
-                    isMinimized: false,
-                    isMaximized: false,
-                    zIndex: (windows.length > 0 ? Math.max(...windows.map(w => w.zIndex)) : 0) + 1,
-                    position: pos,
-                    size
-                };
-
-                setWindows([...windows, newWindow]);
-                setActiveId(id);
+            // Save original bounds before maximizing
+            win.originalBounds = {
+                top: win.element.style.top,
+                left: win.element.style.left,
+                width: win.element.style.width,
+                height: win.element.style.height
             };
 
-            const closeWindow = (id) => {
-                setWindows(windows.filter(w => w.id !== id));
-                if (activeId === id) setActiveId(null);
-            };
+            // Maximize
+            win.element.style.top = '0';
+            win.element.style.left = '0';
+            win.element.style.width = '100%';
+            win.element.style.height = `calc(100% - 38px)`; // Full height minus taskbar
+            win.element.style.display = 'block';
+            win.element.style.zIndex = ++zIndexCounter;
+            win.state = 'maximized';
+            maximizedWindowId = id;
+            updateTaskbarItem(id);
+        }
 
-            const toggleMinimize = (id) => {
-                setWindows(windows.map(w => 
-                    w.id === id ? { ...w, isMinimized: !w.isMinimized } : w
-                ));
-                if (activeId === id) setActiveId(null);
-            };
+        // --- Window Dragging Logic ---
 
-            const toggleMaximize = (id) => {
-                setWindows(windows.map(w => 
-                    w.id === id ? { ...w, isMaximized: !w.isMaximized } : w
-                ));
-                focusWindow(id);
-            };
+        function makeWindowDraggable(elmnt) {
+            const header = elmnt.querySelector('.window-xp-header');
+            if (!header) return;
 
-            const focusWindow = (id) => {
-                setActiveId(id);
-                setWindows(prev => prev.map(w => 
-                    w.id === id ? { ...w, zIndex: Math.max(...prev.map(ww => ww.zIndex), 0) + 1, isMinimized: false } : w
-                ));
-            };
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-            const getWindowContent = (id) => {
-                switch(id) {
-                    case 'about': return <AboutContent />;
-                    case 'resume': return <ResumeContent />;
-                    case 'contact': return <ContactContent />;
-                    case 'skills': return <SkillsContent />;
-                    case 'certifications': return <CertificationsContent />;
-                    case 'testimonials': return <TestimonialsContent />;
-                    case 'computer': return (
-                        <div className="p-4 bg-white min-h-full">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="flex gap-2 p-2 hover:bg-blue-100 rounded cursor-pointer border border-transparent hover:border-blue-200" onClick={() => openWindow('resume', 'My Resume', ICONS.word)}>
-                                    <img src={ICONS.computer} alt="hdd" className="w-10 h-10" />
-                                    <div>
-                                        <div className="font-bold text-sm">Local Disk (C:)</div>
-                                        <div className="text-xs text-gray-500">System</div>
-                                    </div>
-                                </div>
-                                <div className="flex gap-2 p-2 hover:bg-blue-100 rounded cursor-pointer border border-transparent hover:border-blue-200" onClick={() => openWindow('certifications', 'Certifications', ICONS.folderOpen)}>
-                                    <img src={ICONS.folderOpen} alt="folder" className="w-10 h-10" />
-                                    <div>
-                                        <div className="font-bold text-sm">Data (D:)</div>
-                                        <div className="text-xs text-gray-500">Portfolio Data</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    );
-                    default: return null;
-                }
-            };
+            header.onmousedown = dragMouseDown;
+            header.ondblclick = () => maximizeWindow(elmnt.id);
 
-            return (
-                <div className="w-full h-screen bg-[#008080] overflow-hidden select-none font-sans relative">
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#3a6ea5] to-[#80b060] z-0 pointer-events-none"></div>
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
 
-                    <div className="absolute top-4 left-4 z-0 flex flex-row flex-wrap gap-4 sm:flex-col sm:flex-nowrap sm:gap-2 content-start h-[calc(100%-40px)] w-full sm:w-auto p-2">
-                        <DesktopIcon 
-                            label="My Computer" 
-                            iconSrc={ICONS.computer} 
-                            onClick={() => openWindow('computer', 'My Computer', ICONS.computer)}
-                        />
-                        <DesktopIcon 
-                            label="My Documents" 
-                            iconSrc={ICONS.documents} 
-                            onClick={() => openWindow('resume', 'My Resume', ICONS.documents)} 
-                        />
-                        <DesktopIcon 
-                            label="Internet Explorer" 
-                            iconSrc={ICONS.ie} 
-                            onClick={() => openWindow('about', 'Internet Explorer', ICONS.ie)} 
-                        />
-                        <DesktopIcon 
-                            label="Resume.doc" 
-                            iconSrc={ICONS.word} 
-                            onClick={() => openWindow('resume', 'My Resume', ICONS.word)} 
-                        />
-                    </div>
+                if (windows[elmnt.id].state === 'maximized') return;
 
-                    {windows.map(w => (
-                        <WindowFrame 
-                            key={w.id}
-                            windowState={w}
-                            onClose={() => closeWindow(w.id)}
-                            onMaximize={() => toggleMaximize(w.id)}
-                            onMinimize={() => toggleMinimize(w.id)}
-                            onFocus={() => focusWindow(w.id)}
-                        >
-                            {getWindowContent(w.id)}
-                        </WindowFrame>
-                    ))}
+                elmnt.style.zIndex = ++zIndexCounter;
 
-                    {startOpen && (
-                        <div className="absolute bottom-8 left-0 w-72 sm:w-80 bg-white border-2 border-[#0054E3] rounded-t-lg shadow-2xl z-50 flex flex-col font-sans">
-                            <div className="h-14 bg-gradient-to-b from-[#226ce8] to-[#0054E3] flex items-center p-2 gap-3 rounded-t text-white border-b-2 border-orange-400">
-                                <div className="w-10 h-10 bg-white rounded border-2 border-white overflow-hidden shadow">
-                                    <img src={ICONS.user} className="w-full h-full object-cover opacity-80" alt="User" />
-                                </div>
-                                <span className="font-bold text-shadow text-lg truncate">{PORTFOLIO_DATA.profile.name}</span>
-                            </div>
-                            
-                            <div className="flex flex-1 min-h-[300px]">
-                                <div className="w-1/2 bg-white py-2 flex flex-col gap-1">
-                                    <div className="px-2 py-1 hover:bg-[#316AC5] hover:text-white cursor-pointer flex items-center gap-2 group" onClick={() => openWindow('about', 'Internet Explorer', ICONS.ie)}>
-                                        <img src={ICONS.ie} className="w-8 h-8"/>
-                                        <div className="flex flex-col">
-                                            <span className="font-bold text-xs">Internet Explorer</span>
-                                            <span className="text-[9px] text-gray-500 group-hover:text-blue-100">Browser</span>
-                                        </div>
-                                    </div>
-                                    <div className="px-2 py-1 hover:bg-[#316AC5] hover:text-white cursor-pointer flex items-center gap-2 group" onClick={() => openWindow('contact', 'Outlook Express', ICONS.outlook)}>
-                                        <img src={ICONS.outlook} className="w-8 h-8"/>
-                                        <div className="flex flex-col">
-                                            <span className="font-bold text-xs">Outlook Express</span>
-                                            <span className="text-[9px] text-gray-500 group-hover:text-blue-100">E-mail</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="my-1 border-t border-gray-200 mx-2"></div>
+                // get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // call a function whenever the cursor moves:
+                document.onmousemove = elementDrag;
+            }
 
-                                    <div className="px-2 py-1 hover:bg-[#316AC5] hover:text-white cursor-pointer flex items-center gap-2" onClick={() => openWindow('testimonials', 'Notepad', ICONS.notepad)}>
-                                        <img src={ICONS.notepad} className="w-6 h-6"/>
-                                        <span className="text-xs">Testimonials</span>
-                                    </div>
-                                    <div className="px-2 py-1 hover:bg-[#316AC5] hover:text-white cursor-pointer flex items-center gap-2" onClick={() => openWindow('about', 'Paint', ICONS.paint)}>
-                                        <img src={ICONS.paint} className="w-6 h-6"/>
-                                        <span className="text-xs">Services</span>
-                                    </div>
-                                </div>
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
 
-                                <div className="w-1/2 bg-[#D3E5FA] border-l border-[#92C0E0] py-2 flex flex-col text-xs text-[#00156E] gap-1">
-                                    <div className="px-2 py-1 hover:bg-[#316AC5] hover:text-white cursor-pointer flex items-center gap-2 font-bold" onClick={() => openWindow('resume', 'My Documents', ICONS.documents)}>
-                                        <img src={ICONS.documents} className="w-5 h-5"/> My Documents
-                                    </div>
-                                    <div className="px-2 py-1 hover:bg-[#316AC5] hover:text-white cursor-pointer flex items-center gap-2 font-bold" onClick={() => openWindow('certifications', 'My Pictures', ICONS.folderOpen)}>
-                                        <img src="https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/folder-images.png" onError={(e) => e.currentTarget.src = ICONS.folderOpen} className="w-5 h-5"/> My Pictures
-                                    </div>
-                                    <div className="px-2 py-1 hover:bg-[#316AC5] hover:text-white cursor-pointer flex items-center gap-2 font-bold mb-2" onClick={() => openWindow('computer', 'My Computer', ICONS.computer)}>
-                                        <img src={ICONS.computer} className="w-5 h-5"/> My Computer
-                                    </div>
-                                    
-                                    <div className="border-t border-[#92C0E0] mx-2 my-1"></div>
+                // set the element's new position:
+                let newTop = elmnt.offsetTop - pos2;
+                let newLeft = elmnt.offsetLeft - pos1;
 
-                                    <div className="px-2 py-1 hover:bg-[#316AC5] hover:text-white cursor-pointer flex items-center gap-2" onClick={() => openWindow('skills', 'Control Panel', ICONS.controlPanel)}>
-                                        <img src={ICONS.controlPanel} className="w-5 h-5"/> Control Panel
-                                    </div>
-                                </div>
-                            </div>
+                // Keep window within bounds
+                newTop = Math.max(0, Math.min(newTop, window.innerHeight - elmnt.offsetHeight - 38));
+                newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - elmnt.offsetWidth));
 
-                            <div className="h-10 bg-gradient-to-t from-[#226ce8] to-[#4585f3] flex items-center justify-end px-3 rounded-b border-t border-blue-400">
-                                <span className="text-white text-xs italic opacity-80">Welcome to Portfolio XP</span>
-                            </div>
-                        </div>
-                    )}
+                elmnt.style.top = newTop + "px";
+                elmnt.style.left = newLeft + "px";
+            }
 
-                    <div className="absolute bottom-0 left-0 w-full h-8 bg-[#245DDA] flex items-center z-50 border-t-2 border-[#3E80ED]">
-                        <div 
-                            className="h-full pl-0 pr-4 sm:pr-6 relative cursor-pointer hover:brightness-110 active:brightness-95 transition-all"
-                            onClick={() => setStartOpen(!startOpen)}
-                        >
-                            <div className="absolute left-0 top-0 h-full w-full bg-gradient-to-b from-[#3C8644] to-[#255F2A] rounded-r-[15px] shadow-md border-r-2 border-black/20 flex items-center px-2 gap-1 rounded-bl-lg rounded-tl-lg overflow-hidden ml-[-5px]">
-                                <div className="ml-2 italic font-bold text-white text-lg drop-shadow-md flex items-center gap-1" style={{ textShadow: "1px 1px 1px rgba(0,0,0,0.5)"}}>
-                                    <img src="https://raw.githubusercontent.com/turingschool-examples/windows-xp/master/public/icons/win-xp-logo.png" className="w-4 h-4 object-contain mr-1" alt="" />
-                                    start
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="w-4"></div>
-
-                        <div className="hidden sm:flex items-center gap-1 px-2 border-r border-[#1942A0] shadow-[1px_0_0_0_rgba(255,255,255,0.2)] h-full mr-1">
-                            <img src={ICONS.ie} className="w-4 h-4 cursor-pointer hover:opacity-100 opacity-90 transition-opacity" onClick={() => openWindow('about', 'Internet Explorer', ICONS.ie)} title="Internet Explorer" />
-                            <img src={ICONS.outlook} className="w-4 h-4 cursor-pointer hover:opacity-100 opacity-90 transition-opacity" onClick={() => openWindow('contact', 'Outlook Express', ICONS.outlook)} title="Outlook Express" />
-                            <img src={ICONS.mediaPlayer} className="w-4 h-4 cursor-pointer hover:opacity-100 opacity-90 transition-opacity" onClick={() => alert("Music coming soon!")} title="Windows Media Player" />
-                        </div>
-
-                        <div className="flex-1 flex px-1 gap-1 overflow-hidden">
-                            {windows.map(w => (
-                                <div 
-                                    key={w.id}
-                                    onClick={() => w.isMinimized ? focusWindow(w.id) : (activeId === w.id ? toggleMinimize(w.id) : focusWindow(w.id))}
-                                    className={`
-                                        max-w-[160px] flex-1 h-6 mt-1 rounded-[2px] text-xs flex items-center px-2 gap-2 cursor-default select-none
-                                        ${activeId === w.id && !w.isMinimized
-                                            ? 'bg-[#1e52b7] shadow-inner text-white font-bold border border-black/30' 
-                                            : 'bg-[#3C81F0] text-white hover:bg-[#5390f0] shadow-md border-t border-white/30 border-b border-black/30 opacity-90'
-                                        }
-                                    `}
-                                >
-                                    <img src={w.icon} className="w-4 h-4" />
-                                    <span className="truncate">{w.title}</span>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="bg-[#0B9CEE] h-full px-3 flex items-center gap-2 border-l border-[#103885] shadow-[inset_1px_0_0_0_rgba(0,0,0,0.2)] text-white text-xs font-sans whitespace-nowrap">
-                            <div className="hidden sm:flex gap-1 items-center">
-                                <div className="w-4 h-4 flex items-center justify-center bg-transparent">
-                                    <div className="w-3 h-3 bg-red-500 rounded-full border border-white shadow-sm animate-pulse" title="Notification"></div>
-                                </div>
-                            </div>
-                            <span>{currentTime.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})}</span>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+            function closeDragElement() {
+                // stop moving when mouse button is released:
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
     </script>
+
 </body>
+
 </html>
