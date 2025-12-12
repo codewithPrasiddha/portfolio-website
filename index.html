@@ -7,7 +7,7 @@
     <title>Prasiddha Thapaliya - Windows XP Portfolio</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Font Awesome for icons -->
+    <!-- Load Font Awesome for icons (still useful for internal window content) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Load Inter font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -26,9 +26,11 @@
         /* Set Inter font globally */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--xp-blue);
-            background-image: url('https://placehold.co/1920x1080/003669/ffffff?text=Blue+Background'); /* Solid blue background */
+            background-color: #559e55; /* Fallback color */
+            /* Using user-provided local file: bg.jpg */
+            background-image: url('bg.jpg'); 
             background-size: cover;
+            background-position: center;
             min-height: 100vh;
             overflow: hidden; /* Prevent body scroll */
         }
@@ -211,10 +213,43 @@
         }
 
         .desktop-icon-xp .icon {
-            font-size: 40px;
-            margin-bottom: 5px;
-            color: #f89406; /* Yellow/Orange accent */
-            text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+            /* Generic size for custom icons */
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 5px;
+            display: block;
+        }
+        
+        /* Custom SVG Icon Styling */
+        .icon-portfolio { /* My Portfolio/My Computer */
+            fill: #fff;
+            stroke: #000;
+            stroke-width: 1;
+            filter: drop-shadow(1px 1px 0 #000);
+        }
+        .icon-user { /* About Me/My Documents */
+            fill: #f89406;
+            stroke: #000;
+            stroke-width: 1.5;
+            filter: drop-shadow(1px 1px 0 #000);
+        }
+        .icon-resume { /* My Resume/Recycle Bin or briefcase */
+            fill: #fff;
+            stroke: #f89406;
+            stroke-width: 1.5;
+            filter: drop-shadow(1px 1px 0 #000);
+        }
+        .icon-certs { /* Certifications/Network */
+            fill: #3a6ea5;
+            stroke: #fff;
+            stroke-width: 0.5;
+            filter: drop-shadow(1px 1px 0 #000);
+        }
+        .icon-contact { /* Contact Me/Mail */
+            fill: #cc0000;
+            stroke: #fff;
+            stroke-width: 1;
+            filter: drop-shadow(1px 1px 0 #000);
         }
 
         .desktop-icon-xp .label {
@@ -332,27 +367,67 @@
     <div id="desktop" class="absolute inset-0 pb-10">
         <!-- Desktop Icons -->
         <div class="desktop-icon-xp" data-window-id="window-home" ondblclick="openWindow('window-home')">
-            <div class="icon"><i class="fas fa-desktop"></i></div>
+            <div class="icon">
+                <!-- My Computer / My Portfolio Icon -->
+                <svg class="icon-portfolio" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <rect x="5" y="10" width="40" height="30" rx="4" fill="#3a6ea5" stroke="#fff" stroke-width="2"/>
+                    <rect x="10" y="15" width="30" height="20" rx="2" fill="#fff" stroke="#3a6ea5" stroke-width="1.5"/>
+                    <rect x="12" y="17" width="26" height="16" fill="#003669"/>
+                    <circle cx="25" cy="42" r="3" fill="#000" stroke="#fff" stroke-width="1"/>
+                    <path d="M15 40 L35 40" stroke="#000" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+            </div>
             <div class="label">My Portfolio</div>
         </div>
 
         <div class="desktop-icon-xp" data-window-id="window-about" ondblclick="openWindow('window-about')">
-            <div class="icon"><i class="fas fa-user-tie"></i></div>
+            <div class="icon">
+                <!-- My Documents / About Me Icon -->
+                <svg class="icon-user" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <rect x="10" y="10" width="30" height="35" rx="3" fill="#fff" stroke="#f89406" stroke-width="2"/>
+                    <rect x="12" y="12" width="26" height="31" fill="#f89406"/>
+                    <path d="M 12 15 L 38 15 L 38 41 L 12 41 Z" fill="#fff"/>
+                    <path d="M 15 20 L 35 20 M 15 25 L 35 25 M 15 30 L 30 30" stroke="#f89406" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
             <div class="label">About Me</div>
         </div>
 
         <div class="desktop-icon-xp" data-window-id="window-resume" ondblclick="openWindow('window-resume')">
-            <div class="icon"><i class="fas fa-award"></i></div>
+            <div class="icon">
+                <!-- Briefcase / My Resume Icon -->
+                <svg class="icon-resume" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <rect x="10" y="20" width="30" height="15" rx="3" fill="#9cbacf" stroke="#3a6ea5" stroke-width="2"/>
+                    <path d="M15 20 L15 15 C15 12 18 10 25 10 C32 10 35 12 35 15 L35 20" fill="#3a6ea5" stroke="#3a6ea5" stroke-width="2"/>
+                    <rect x="12" y="22" width="26" height="11" fill="#fff" opacity="0.8"/>
+                    <rect x="23" y="18" width="4" height="4" rx="1" fill="#000"/>
+                </svg>
+            </div>
             <div class="label">My Resume</div>
         </div>
         
         <div class="desktop-icon-xp" data-window-id="window-certs" ondblclick="openWindow('window-certs')">
-            <div class="icon"><i class="fas fa-certificate"></i></div>
+            <div class="icon">
+                <!-- Network / Certifications Icon -->
+                <svg class="icon-certs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="10" fill="#f89406" stroke="#fff" stroke-width="2"/>
+                    <circle cx="25" cy="25" r="5" fill="#3a6ea5"/>
+                    <path d="M25 15 C35 15 40 20 40 25 C40 30 35 35 25 35 C15 35 10 30 10 25 C10 20 15 15 25 15" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="2, 2"/>
+                    <path d="M25 15 L25 5 M15 25 L5 25 M35 25 L45 25 M25 35 L25 45" stroke="#3a6ea5" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+            </div>
             <div class="label">Certifications</div>
         </div>
 
         <div class="desktop-icon-xp" data-window-id="window-contact" ondblclick="openWindow('window-contact')">
-            <div class="icon"><i class="fas fa-paper-plane"></i></div>
+            <div class="icon">
+                <!-- Envelope / Contact Me Icon -->
+                <svg class="icon-contact" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <rect x="5" y="15" width="40" height="25" rx="3" fill="#fff" stroke="#cc0000" stroke-width="2"/>
+                    <path d="M5 15 L25 30 L45 15" fill="none" stroke="#cc0000" stroke-width="2"/>
+                    <path d="M25 30 L45 15 V40 L5 40 V15 L25 30" fill="#cc0000"/>
+                </svg>
+            </div>
             <div class="label">Contact Me</div>
         </div>
 
